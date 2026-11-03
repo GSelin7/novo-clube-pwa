@@ -1,5 +1,5 @@
 (function () {
-  const STORAGE_KEY = 'novo_clube_state_v4';
+  const STORAGE_KEY = 'novo_clube_state_v6';
 
   // Estado Global da Aplicação
   let state = loadState();
@@ -354,7 +354,7 @@
               <p>O clube de benefícios feito para toda a família. Cadastre suas notas fiscais, junte pontos para trocar por ofertas mensais e colecione os 4 Astros!</p>
             </div>
             <div class="auth-mascot-box">
-              <img src="assets/images/astros/astro-servicos.png?v=3" alt="Astro Serviços" />
+              <img src="assets/images/astros/astro-servicos.png?v=6" alt="Astro Serviços" />
               <div>
                 <strong>🎁 1º Astro Grátis no Cadastro!</strong>
                 <span>Entre ou crie sua conta familiar e desbloqueie o Astro Serviços automaticamente.</span>
@@ -669,7 +669,7 @@
           </div>
 
           <div class="home-mascot-center">
-            <img src="assets/images/astros/astro-hero-desktop.png?v=3" alt="Astro Serviços — Mascote Novo Clube" />
+            <img src="assets/images/astros/astro-hero-desktop.png?v=6" alt="Astro Serviços — Mascote Novo Clube" />
           </div>
 
           <div class="home-cards-col">
@@ -796,7 +796,7 @@
 
         <div class="dual-points-explainer">
           <div class="dual-box dual-box--red">
-            <img src="assets/images/astros/astro-lazer.png?v=3" alt="Coleção" style="width:52px; height:52px; object-fit:contain; border-radius:12px; background:#fff; padding:4px;" />
+            <img src="assets/images/astros/astro-lazer.png?v=6" alt="Coleção" style="width:56px; height:56px; object-fit:contain;" />
             <div>
               <strong style="color:var(--red); font-size:0.95rem; display:block; margin-bottom:4px;">
                 1. Pontos de Coleção (Barra Vermelha • Nunca diminui!)
@@ -908,7 +908,7 @@
                 <img src="${benefit.image}" alt="${benefit.title}" />
               </div>
               <div style="margin-top:14px; padding:14px 18px; background:var(--red-bg); border:1px solid #FECDD3; border-radius:16px; display:flex; align-items:center; gap:12px;">
-                <img src="assets/images/astros/astro-servicos.png?v=3" alt="Astro" style="width:44px; height:44px; object-fit:contain; border-radius:10px; background:#fff; padding:2px;" />
+                <img src="assets/images/astros/astro-servicos.png?v=6" alt="Astro" style="width:48px; height:48px; object-fit:contain;" />
                 <div style="font-size:0.8rem; color:var(--navy); line-height:1.4;">
                   <strong style="color:var(--red); display:block;">Sua Coleção Astro não diminui!</strong>
                   Ao resgatar este benefício, seus <strong>${profile.collectionPoints} pontos</strong> de coleção continuam valendo para desbloquear os 4 Astros.
@@ -1496,7 +1496,7 @@
               Ver minha coleção &gt;
             </button>
           </div>
-          <img src="assets/images/astros/astro-banner-perfil.png?v=3" alt="Astro Novo Clube" />
+          <img src="assets/images/astros/astro-banner-perfil.png?v=6" alt="Astro Novo Clube" />
         </div>
       </div>
     `;
@@ -2342,8 +2342,12 @@
   document.addEventListener('DOMContentLoaded', () => {
     renderApp(true);
     if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
+      navigator.serviceWorker
+        .register('./sw.js', { updateViaCache: 'none' })
+        .then((reg) => reg.update())
+        .catch(() => {});
     }
   });
 })();
+
 

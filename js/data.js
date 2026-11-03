@@ -1,4 +1,4 @@
-window.NOVO_CLUBE_DEFAULT_DATA = {
+﻿window.NOVO_CLUBE_DEFAULT_DATA = {
   accountEmail: 'mariana@email.com',
   currentMonth: 'Outubro',
   monthsOrder: ['Outubro', 'Novembro', 'Dezembro'],
@@ -16,8 +16,8 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       requiredPoints: 0,
       releaseMonth: 'Outubro',
       requirementLabel: 'Ação cadastrada',
-      image3d: 'assets/images/astros/astro-servicos.png?v=3',
-      imageReal: 'assets/images/astros-reais/astro-servicos-real.jpg?v=3',
+      image3d: 'assets/images/astros/astro-servicos.png?v=6',
+      imageReal: 'assets/images/astros-reais/astro-servicos-real.jpg?v=6',
       accessories: 'Camisa polo amarela com crachá do Novo Shopping e óculos redondos',
       description: 'Desbloqueado automaticamente no seu cadastro! Representa a praticidade de resolver tudo em um só lugar: bancos, lotérica, academia, clínica de saúde e serviços especializados.'
     },
@@ -30,8 +30,8 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       requiredPoints: 500,
       releaseMonth: 'Outubro',
       requirementLabel: '500 pontos',
-      image3d: 'assets/images/astros/astro-lazer.png?v=3',
-      imageReal: 'assets/images/astros-reais/astro-lazer-real.jpg?v=3',
+      image3d: 'assets/images/astros/astro-lazer.png?v=6',
+      imageReal: 'assets/images/astros-reais/astro-lazer-real.jpg?v=6',
       accessories: 'Óculos 3D de cinema e balde de pipoca exclusivo do Novo Shopping',
       description: 'Representa os momentos inesquecíveis em família: sessões de cinema, praça de alimentação completa, parques infantis e eventos culturais no Novo Shopping.'
     },
@@ -44,8 +44,8 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       requiredPoints: 1000,
       releaseMonth: 'Novembro',
       requirementLabel: '1.000 pontos',
-      image3d: 'assets/images/astros/astro-esportes.png?v=3',
-      imageReal: 'assets/images/astros-reais/astro-esportes-real.jpg?v=3',
+      image3d: 'assets/images/astros/astro-esportes.png?v=6',
+      imageReal: 'assets/images/astros-reais/astro-esportes-real.jpg?v=6',
       accessories: 'Faixa esportiva na cabeça e par de halteres de pelúcia',
       description: 'Representa a categoria de Saúde, bem-estar e vida ativa. Liberado na virada para Novembro para quem acumula 1.000 pontos na coleção.'
     },
@@ -58,8 +58,8 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       requiredPoints: 1500,
       releaseMonth: 'Dezembro',
       requirementLabel: '1.500 pontos',
-      image3d: 'assets/images/astros/astro-compras.png?v=3',
-      imageReal: 'assets/images/astros-reais/astro-compras-real.jpg?v=3',
+      image3d: 'assets/images/astros/astro-compras.png?v=6',
+      imageReal: 'assets/images/astros-reais/astro-compras-real.jpg?v=6',
       accessories: 'Sacolas de compras coloridas com a estrela do Novo Shopping',
       description: 'O grande troféu da jornada! Representa a força do Varejo do Novo Shopping Ribeirão Preto. Liberado em Dezembro ao atingir 1.500 pontos acumulados.'
     }
@@ -76,7 +76,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       partner: 'Cinemark Novo Shopping',
       location: 'Piso Lazer — Próximo à Praça de Alimentação',
       validity: 'Válido até 31 de Outubro • Seg a Qui (2D e 3D)',
-      image: 'assets/images/beneficios/cinema.jpg?v=3',
+      image: 'assets/images/beneficios/cinema.jpg?v=6',
       description: 'Garanta 50% de desconto na compra de 1 ingresso inteiro para qualquer sessão 2D ou 3D de segunda a quinta-feira no Cinemark do Novo Shopping Ribeirão Preto.',
       rules: [
         'Apresente o voucher gerado pelo Novo Clube na bilheteria ou insira o código no totem de autoatendimento.',
@@ -94,7 +94,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       partner: 'Cafeteria Grão do Novo',
       location: 'Corredor Central — Entrada Principal',
       validity: 'Válido todos os dias das 10h às 22h',
-      image: 'assets/images/beneficios/cafe.jpg?v=3',
+      image: 'assets/images/beneficios/cafe.jpg?v=6',
       description: 'Um café espresso médio cremoso ou cappuccino tradicional preparado na hora com grãos selecionados nas cafeterias participantes do Novo Shopping.',
       rules: [
         'Válido para 1 unidade de Café Espresso Especial (120ml) ou Cappuccino Tradicional (180ml).',
@@ -112,7 +112,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       partner: 'Burger Novo Grill',
       location: 'Praça de Alimentação — Loja 204',
       validity: 'Válido todos os dias em Outubro',
-      image: 'assets/images/beneficios/combo.jpg?v=3',
+      image: 'assets/images/beneficios/combo.jpg?v=6',
       description: 'Hambúrguer artesanal grelhado no fogo com queijo cheddar derretido, alface crocante, tomate fresco e molho especial no pão com gergelim + batata frita média.',
       rules: [
         'Inclui 1 Cheeseburger Artesanal + 1 porção média de batatas fritas crocantes.',
@@ -130,7 +130,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       partner: 'Gelateria & Sorvetes',
       location: 'Praça de Alimentação — Quiosque Central',
       validity: 'Válido todos os dias para compartilhar em família',
-      image: 'assets/images/beneficios/sobremesa.jpg?v=3',
+      image: 'assets/images/beneficios/sobremesa.jpg?v=6',
       description: 'Na compra de uma taça de sorvete artesanal de morango com calda especial da fruta, ganhe outra taça igual na hora para aproveitar com a família!',
       rules: [
         'Compre 1 taça de 2 bolas e leve a 2ª taça gratuitamente apresentando seu voucher.',
@@ -146,7 +146,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Serviços',
       points: 20,
       partner: 'Estacionamento Novo Shopping',
-      image: 'assets/images/beneficios/estacionamento.jpg?v=3',
+      image: 'assets/images/beneficios/estacionamento.jpg?v=6',
       description: 'Valide seu ticket de estacionamento com 2 horas gratuitas em qualquer dia da semana diretamente pelo aplicativo.',
       featured: false
     },
@@ -157,7 +157,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Serviços',
       points: 45,
       partner: 'Lojas Participantes do Novo',
-      image: 'assets/images/astros-reais/astro-compras-real.jpg?v=3',
+      image: 'assets/images/astros-reais/astro-compras-real.jpg?v=6',
       description: 'Bônus de R$ 30 de desconto em compras acima de R$ 120 nas lojas de vestuário, calçados e acessórios participantes.',
       featured: false
     },
@@ -170,7 +170,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Lazer',
       points: 35,
       partner: 'Cinemark Novo Shopping',
-      image: 'assets/images/beneficios/cinema.jpg?v=3',
+      image: 'assets/images/beneficios/cinema.jpg?v=6',
       description: '1 Balde de pipoca amanteigada + 1 bebida grande para aproveitar os lançamentos de novembro no cinema.',
       featured: true
     },
@@ -181,7 +181,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Alimentação',
       points: 25,
       partner: 'Cafeteria Grão do Novo',
-      image: 'assets/images/beneficios/cafe.jpg?v=3',
+      image: 'assets/images/beneficios/cafe.jpg?v=6',
       description: 'Dois cappuccinos gelados pelo preço de um para refrescar a tarde de compras em Ribeirão Preto.',
       featured: true
     },
@@ -192,7 +192,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Serviços',
       points: 35,
       partner: 'Academia & Saúde Novo',
-      image: 'assets/images/astros-reais/astro-esportes-real.jpg?v=3',
+      image: 'assets/images/astros-reais/astro-esportes-real.jpg?v=6',
       description: 'Avaliação física completa e 3 dias de acesso livre à academia para celebrar a chegada do Astro Esportes.',
       featured: true
     },
@@ -203,7 +203,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Alimentação',
       points: 15,
       partner: 'Gelateria & Sorvetes',
-      image: 'assets/images/beneficios/sobremesa-bowl.jpg?v=3',
+      image: 'assets/images/beneficios/sobremesa-bowl.jpg?v=6',
       description: 'Troque apenas 15 pontos do seu saldo por uma casquinha crocante recheada com creme de avelã.',
       featured: true
     },
@@ -216,7 +216,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Lazer',
       points: 45,
       partner: 'Cinemark Novo Shopping',
-      image: 'assets/images/beneficios/cinema.jpg?v=3',
+      image: 'assets/images/beneficios/cinema.jpg?v=6',
       description: 'Sessão especial de férias em família com ingresso + pipoca média inclusa.',
       featured: true
     },
@@ -227,7 +227,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Alimentação',
       points: 60,
       partner: 'Burger Novo Grill',
-      image: 'assets/images/beneficios/combo.jpg?v=3',
+      image: 'assets/images/beneficios/combo.jpg?v=6',
       description: 'Desconto especial de 40% no combo familiar com 4 lanches artesanais e porção grande de fritas.',
       featured: true
     },
@@ -238,7 +238,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Serviços',
       points: 20,
       partner: 'Espaço Cliente Novo Clube',
-      image: 'assets/images/astros-reais/astro-compras-real.jpg?v=3',
+      image: 'assets/images/astros-reais/astro-compras-real.jpg?v=6',
       description: 'Embalagem especial para seus presentes de fim de ano + café cortesia no lounge do Novo Clube.',
       featured: true
     },
@@ -249,7 +249,7 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
       category: 'Alimentação',
       points: 30,
       partner: 'Gelateria & Sorvetes',
-      image: 'assets/images/beneficios/sobremesa.jpg?v=3',
+      image: 'assets/images/beneficios/sobremesa.jpg?v=6',
       description: 'Taça artesanal com 3 bolas, calda quente e castanhas.',
       featured: true
     }
@@ -404,4 +404,5 @@ window.NOVO_CLUBE_DEFAULT_DATA = {
     }
   ]
 };
+
 

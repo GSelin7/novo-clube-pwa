@@ -1,4 +1,4 @@
-const CACHE_NAME = 'novo-clube-pwa-v5';
+﻿const CACHE_NAME = 'novo-clube-pwa-v6';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -61,3 +61,4 @@ self.addEventListener('fetch', (event) => {
       .catch(() => caches.match(event.request))
   );
 });
+
