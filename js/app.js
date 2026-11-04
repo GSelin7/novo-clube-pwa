@@ -64,17 +64,20 @@
   function renderBrandLogo(sizeClass = '') {
     return `
       <a href="#inicio" class="brand-logo ${sizeClass}" onclick="window.NovoClube.navigate('inicio'); return false;" aria-label="Novo Clube">
-        <svg viewBox="0 0 250 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 35V7H12.2L21.4 22.8V7H29.4V35H21.2L12 19.2V35H4Z" fill="#002745"/>
-          <circle cx="46.5" cy="21" r="14.5" fill="#002745"/>
-          <path d="M46.5 11.5L49.4 18.1L56 21L49.4 23.9L46.5 30.5L43.6 23.9L37 21L43.6 18.1L46.5 11.5Z" fill="#ffffff"/>
-          <path d="M68.5 35L59.5 7H68.4L73.6 25.4L78.8 7H87.7L78.7 35H68.5Z" fill="#002745"/>
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M102.5 35.5C110.784 35.5 117 29.232 117 21C117 12.768 110.784 6.5 102.5 6.5C94.2157 6.5 88 12.768 88 21C88 29.232 94.2157 35.5 102.5 35.5ZM102.5 27.8C106.09 27.8 108.7 25.02 108.7 21C108.7 16.98 106.09 14.2 102.5 14.2C98.9101 14.2 96.3 16.98 96.3 21C96.3 25.02 98.9101 27.8 102.5 27.8Z" fill="#002745"/>
-          <path d="M135.8 35.5C128.4 35.5 123.5 30.1 123.5 21C123.5 11.9 128.4 6.5 135.8 6.5C141.7 6.5 145.8 9.9 146.7 15.6H139C138.4 13.7 137.3 12.8 135.7 12.8C132.9 12.8 131.5 15.6 131.5 21C131.5 26.4 132.9 29.2 135.7 29.2C137.3 29.2 138.4 28.3 139 26.4H146.7C145.8 32.1 141.7 35.5 135.8 35.5Z" fill="#ff1d23"/>
-          <path d="M150 35V7H157.8V28.6H168.2V35H150Z" fill="#ff1d23"/>
-          <path d="M181.6 35.5C174.5 35.5 170.5 31.3 170.5 23.7V7H178.3V23.5C178.3 27.2 179.5 29.1 181.8 29.1C184.1 29.1 185.3 27.2 185.3 23.5V7H193.1V23.7C193.1 31.3 189.1 35.5 181.6 35.5Z" fill="#ff1d23"/>
-          <path d="M197 35V7H208.8C214.6 7 218.1 9.7 218.1 14.1C218.1 17.2 216.5 19.3 213.8 20.1C217.1 20.9 218.9 23.3 218.9 26.9C218.9 32 215.1 35 209 35H197ZM204.6 18.1H207.8C209.6 18.1 210.6 17.1 210.6 15.3C210.6 13.6 209.6 12.6 207.8 12.6H204.6V18.1ZM204.6 29.2H208.1C210.1 29.2 211.2 28.1 211.2 26.2C211.2 24.2 210.1 23.2 208.1 23.2H204.6V29.2Z" fill="#ff1d23"/>
-          <path d="M222.5 35V7H241.5V13.2H230.3V17.9H239.8V23.9H230.3V28.8H241.8V35H222.5Z" fill="#ff1d23"/>
+        <svg viewBox="0 0 136 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- N -->
+          <path d="M6 34V6H14.2L24.5 22.8V6H32.5V34H24.3L14 17.2V34H6Z" fill="#ffffff"/>
+          <!-- Primeiro O com silhueta da estrela Novo Shopping vazada em #002745 -->
+          <circle cx="51.5" cy="20" r="14.8" fill="#ffffff"/>
+          <circle cx="50.4" cy="11.8" r="2.6" fill="#002745"/>
+          <path d="M39.5 18.2L48.2 15.5L61.4 13.2L55.3 19.8L56.5 29.8L50.5 24.4L43.4 31.2L46.6 21.0L39.5 18.2Z" fill="#002745"/>
+          <path d="M62.1 15.3L64.2 17.4L62.1 19.5L60.0 17.4L62.1 15.3Z" fill="#002745"/>
+          <!-- V -->
+          <path d="M69.5 6H78.3L84.2 24.6L90.1 6H98.9L89.2 34H79.2L69.5 6Z" fill="#ffffff"/>
+          <!-- Segundo O -->
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M115.5 34.8C123.784 34.8 130.3 28.232 130.3 20C130.3 11.768 123.784 5.2 115.5 5.2C107.216 5.2 100.7 11.768 100.7 20C100.7 28.232 107.216 34.8 115.5 34.8ZM115.5 27.2C119.2 27.2 121.9 24.2 121.9 20C121.9 15.8 119.2 12.8 115.5 12.8C111.8 12.8 109.1 15.8 109.1 20C109.1 24.2 111.8 27.2 115.5 27.2Z" fill="#ffffff"/>
+          <!-- CLUBE centralizado abaixo -->
+          <text x="68.2" y="48" text-anchor="middle" fill="#ffffff" fill-opacity="0.9" font-family="'Ranade', 'Bespoke Sans', sans-serif" font-weight="300" font-size="10.2" letter-spacing="5.2">CLUBE</text>
         </svg>
       </a>
     `;
@@ -346,8 +349,8 @@
         <div class="auth-container">
           <div class="auth-hero">
             <div>
-              <div style="background:#FFFFFF; display:inline-block; padding:8px 16px; border-radius:999px; margin-bottom:22px;">
-                ${renderBrandLogo()}
+              <div style="margin-bottom:22px;">
+                ${renderBrandLogo('brand-logo--lg')}
               </div>
               <div class="auth-badge">⭐ Novo Shopping Ribeirão Preto</div>
               <h1>Seu dia vale mais aqui.</h1>
@@ -801,21 +804,21 @@
               <strong style="color:var(--red); font-size:0.95rem; display:block; margin-bottom:4px;">
                 1. Pontos de Coleção (Barra Vermelha • Nunca diminui!)
               </strong>
-              <p style="font-size:0.84rem; color:var(--text-main);">
+              <p style="font-size:0.84rem; color:rgba(255,255,255,0.86);">
                 Toda nota fiscal cadastrada soma pontos na sua jornada dos Astros. Mesmo quando você resgata benefícios, sua pontuação de coleção continua subindo até conquistar os 4 mascotes!
               </p>
             </div>
           </div>
 
           <div class="dual-box dual-box--blue">
-            <div class="status-card-icon-gift" style="width:50px; height:50px; background:#fff;">
+            <div class="status-card-icon-gift" style="width:50px; height:50px;">
               ${iconSvg('gift')}
             </div>
             <div>
-              <strong style="color:var(--blue); font-size:0.95rem; display:block; margin-bottom:4px;">
-                2. Saldo de Benefícios (Barra Azul • Sobe e desce)
+              <strong style="color:#ffffff; font-size:0.95rem; display:block; margin-bottom:4px;">
+                2. Saldo de Benefícios (Sobe e desce conforme resgates)
               </strong>
-              <p style="font-size:0.84rem; color:var(--text-main);">
+              <p style="font-size:0.84rem; color:rgba(255,255,255,0.86);">
                 Os mesmos pontos da sua nota também entram no seu Saldo de Benefícios para você trocar por ingressos de cinema, cafés, hambúrgueres, sorvetes e descontos nas lojas do Novo Shopping.
               </p>
             </div>
@@ -846,7 +849,7 @@
 
     if (filteredBenefits.length === 0) {
       return `
-        <div class="subtle-update" style="text-align:center; padding:48px 20px; color:var(--text-muted);">
+        <div class="subtle-update" style="text-align:center; padding:48px 20px; color:rgba(255,255,255,0.85);">
           Nenhum benefício encontrado para <strong>"${benefitSearchQuery}"</strong> em ${state.currentMonth}.
         </div>
       `;
@@ -897,8 +900,8 @@
             <button type="button" class="benefit-back-link" onclick="window.NovoClube.closeBenefitDetail()">
               ${iconSvg('chevronLeft')} Voltar para Benefícios de ${state.currentMonth}
             </button>
-            <div style="font-size:0.86rem; color:var(--navy);">
-              Seu saldo atual: <strong style="color:var(--blue);">${profile.benefitBalance} pontos</strong>
+            <div style="font-size:0.86rem; color:rgba(255,255,255,0.88);">
+              Seu saldo atual: <strong style="color:#ffffff;">${profile.benefitBalance} pontos</strong>
             </div>
           </div>
 
@@ -907,9 +910,9 @@
               <div class="benefit-detail-img-box">
                 <img src="${benefit.image}" alt="${benefit.title}" />
               </div>
-              <div style="margin-top:14px; padding:14px 18px; background:var(--red-bg); border:1px solid #FECDD3; border-radius:16px; display:flex; align-items:center; gap:12px;">
+              <div style="margin-top:14px; padding:14px 18px; background:rgba(255,29,35,0.14); border:1px solid rgba(255,29,35,0.45); border-radius:16px; display:flex; align-items:center; gap:12px;">
                 <img src="assets/images/astros/astro-servicos.png?v=8" alt="Astro" style="width:48px; height:48px; object-fit:contain;" />
-                <div style="font-size:0.8rem; color:var(--navy); line-height:1.4;">
+                <div style="font-size:0.8rem; color:rgba(255,255,255,0.9); line-height:1.4;">
                   <strong style="color:var(--red); display:block;">Sua Coleção Astro não diminui!</strong>
                   Ao resgatar este benefício, seus <strong>${profile.collectionPoints} pontos</strong> de coleção continuam valendo para desbloquear os 4 Astros.
                 </div>
@@ -927,12 +930,12 @@
                 📍 ${benefit.partner} ${benefit.location ? `• ${benefit.location}` : ''}
               </p>
 
-              <div style="display:inline-flex; align-items:baseline; gap:8px; background:var(--blue-bg); color:var(--blue); padding:10px 20px; border-radius:16px; margin-bottom:18px;">
+              <div style="display:inline-flex; align-items:baseline; gap:8px; background:var(--red); color:#ffffff; padding:10px 20px; border-radius:16px; margin-bottom:18px;">
                 <strong style="font-size:1.65rem; font-weight:800;">${benefit.points} pontos</strong>
                 <span style="font-size:0.82rem; font-weight:600;">do Saldo de Benefícios</span>
               </div>
 
-              <h4 style="font-size:0.92rem; font-weight:800; color:var(--navy); margin-bottom:6px;">Sobre este benefício</h4>
+              <h4 style="font-size:0.92rem; font-weight:800; color:#ffffff; margin-bottom:6px;">Sobre este benefício</h4>
               <p class="benefit-detail-desc">${benefit.description}</p>
 
               <div class="benefit-rules-box">
@@ -1014,9 +1017,9 @@
                 .join('')}
             </div>
 
-            <div style="margin-top:22px; padding:14px 18px; background:var(--blue-bg); border-radius:16px; display:inline-flex; align-items:center; gap:10px;">
-              <span style="font-size:0.84rem; color:var(--navy);">Seu saldo disponível:</span>
-              <strong id="benefits-balance-Number" style="font-size:1.05rem; color:var(--blue);">${profile.benefitBalance} pontos</strong>
+            <div style="margin-top:22px; padding:14px 18px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.24); border-radius:16px; display:inline-flex; align-items:center; gap:10px;">
+              <span style="font-size:0.84rem; color:rgba(255,255,255,0.88);">Seu saldo disponível:</span>
+              <strong id="benefits-balance-Number" style="font-size:1.05rem; color:#ffffff;">${profile.benefitBalance} pontos</strong>
             </div>
           </div>
 
@@ -1123,11 +1126,11 @@
       <div class="points-timeline-card" style="${isModal ? 'margin-bottom:0; box-shadow:none; border:none; padding:6px 4px;' : ''}">
         <div class="points-timeline-top">
           <div>
-            <p class="section-eyebrow" style="margin-bottom:4px;">SISTEMA DE PONTUAÇÃO DA COLEÇÃO</p>
+            <p class="section-eyebrow" style="margin-bottom:4px; color:rgba(255,255,255,0.88);">SISTEMA DE PONTUAÇÃO DA COLEÇÃO</p>
             <h3>Sua Linha do Tempo Astro</h3>
-            <p>Você possui <strong style="color:var(--navy);">${pts} pontos acumulados</strong> de 1.500 pontos da jornada.</p>
+            <p>Você possui <strong style="color:#ffffff;">${pts} pontos acumulados</strong> de 1.500 pontos da jornada.</p>
             <div class="points-timeline-current-pill">
-              ⭐ ${faltaNext > 0 ? `Faltam ${faltaNext} pontos para desbloquear o ${nextAstro.name}` : 'Parabéns! Você atingiu a pontuação máxima de 1.500 pontos!'}
+              ★ ${faltaNext > 0 ? `Faltam ${faltaNext} pontos para desbloquear o ${nextAstro.name}` : 'Parabéns! Você atingiu a pontuação máxima de 1.500 pontos!'}
             </div>
           </div>
           <button type="button" class="btn-primary" onclick="window.NovoClube.closeModal(); window.NovoClube.openInvoiceModal();">
@@ -1246,7 +1249,7 @@
             <p class="section-desc" style="margin-bottom:20px;">
               Acompanhe seu progresso e desbloqueie todos os colecionáveis. Clique em um Astro para conhecer sua versão de pelúcia física no Novo Shopping!
             </p>
-            <div style="font-size:0.82rem; color:var(--text-muted); margin-bottom:8px; font-weight:700;">
+            <div style="font-size:0.82rem; color:#ffffff; margin-bottom:8px; font-weight:700;">
               Mês da campanha (liberação mensal):
             </div>
             <div class="month-pills" style="margin-top:0;">
@@ -1334,7 +1337,7 @@
 
             <div class="profile-kpis-grid">
               <div class="kpi-card" style="cursor:pointer;" onclick="window.NovoClube.openPointsTimelineModal()" title="Clique para abrir a Linha do Tempo da Pontuação">
-                <div class="kpi-icon" style="background:var(--red-bg); color:var(--red);">
+                <div class="kpi-icon" style="background:rgba(255,29,35,0.18); color:var(--red); border:1px solid rgba(255,29,35,0.4);">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </div>
                 <div>
@@ -1345,7 +1348,7 @@
               </div>
 
               <div class="kpi-card">
-                <div class="kpi-icon" style="background:var(--blue-bg); color:var(--blue);">
+                <div class="kpi-icon" style="background:rgba(255,255,255,0.12); color:#ffffff; border:1px solid rgba(255,255,255,0.28);">
                   ${iconSvg('gift')}
                 </div>
                 <div>
@@ -1356,7 +1359,7 @@
               </div>
 
               <div class="kpi-card">
-                <div class="kpi-icon" style="background:#F1F5F9; color:var(--navy);">
+                <div class="kpi-icon" style="background:rgba(255,255,255,0.12); color:#ffffff; border:1px solid rgba(255,255,255,0.28);">
                   ${iconSvg('receipt')}
                 </div>
                 <div>
@@ -1490,11 +1493,11 @@
               .map((a) => {
                 const st = getAstroStatus(a, profile);
                 return `
-                <div style="border:1px solid var(--border-color); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.NovoClube.openAstroDetailModal('${a.id}')">
+                <div style="border:1.5px solid rgba(255,255,255,0.35); background:rgba(255,255,255,0.04); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.NovoClube.openAstroDetailModal('${a.id}')">
                   <img src="${a.image3d}" alt="${a.name}" style="width:54px; height:54px; object-fit:contain;" />
                   <div>
-                    <strong style="font-size:0.9rem; display:block;">${a.name}</strong>
-                    <span style="font-size:0.78rem; color:${st.state === 'conquistado' ? 'var(--green)' : 'var(--text-muted)'}; font-weight:700;">
+                    <strong style="font-size:0.9rem; display:block; color:#ffffff;">${a.name}</strong>
+                    <span style="font-size:0.78rem; color:${st.state === 'conquistado' ? 'var(--red)' : 'rgba(255,255,255,0.8)'}; font-weight:700;">
                       ${st.state === 'conquistado' ? '✔ Conquistado' : st.state === 'andamento' ? `${st.progressPoints}/${st.targetPoints} pts` : '🔒 Bloqueado'}
                     </span>
                   </div>
@@ -1517,9 +1520,9 @@
             ${state.faqs
               .map(
                 (f) => `
-              <div style="padding:14px 16px; background:#F8FAFC; border-radius:14px; border:1px solid var(--border-color);">
-                <strong style="display:block; color:var(--navy); margin-bottom:6px; font-size:0.92rem;">${f.q}</strong>
-                <p style="font-size:0.85rem; color:var(--text-muted);">${f.a}</p>
+              <div style="padding:14px 16px; background:rgba(255,255,255,0.06); border-radius:14px; border:1px solid rgba(255,255,255,0.2);">
+                <strong style="display:block; color:#ffffff; margin-bottom:6px; font-size:0.92rem;">${f.q}</strong>
+                <p style="font-size:0.85rem; color:rgba(255,255,255,0.82);">${f.a}</p>
               </div>
             `
               )
@@ -1535,7 +1538,7 @@
           <div class="movements-header">
             <h3>Termos e condições — Novo Clube</h3>
           </div>
-          <div style="font-size:0.86rem; color:var(--text-muted); line-height:1.65; display:flex; flex-direction:column; gap:10px;">
+          <div style="font-size:0.86rem; color:rgba(255,255,255,0.88); line-height:1.65; display:flex; flex-direction:column; gap:10px;">
             <p><strong>1. Participação e Perfis Familiares:</strong> O Novo Clube é o programa oficial de relacionamento do Novo Shopping Ribeirão Preto. Cada conta familiar pode cadastrar múltiplos perfis individuais gratuitamente.</p>
             <p><strong>2. Acúmulo de Pontos (R$ 1 = 1 ponto):</strong> Notas fiscais emitidas por lojas participantes do Novo Shopping geram 1 ponto a cada R$ 1,00 gasto, creditados simultaneamente nos Pontos de Coleção e no Saldo de Benefícios.</p>
             <p><strong>3. Colecionáveis Astros:</strong> Os 4 Astros representam as categorias Serviços, Lazer, Saúde/Esportes e Varejo/Compras. O primeiro Astro é concedido na adesão e os demais são desbloqueados ao atingir 500, 1.000 e 1.500 pontos, respeitando o calendário de liberação mensal.</p>
@@ -1584,7 +1587,7 @@
         <div class="movements-card">
           <div class="movements-header">
             <h3>Últimas movimentações</h3>
-            <button type="button" style="color:var(--blue); font-size:0.82rem; font-weight:700;" onclick="window.NovoClube.setProfileSubTab('historico')">
+            <button type="button" style="color:var(--red); font-size:0.82rem; font-weight:700;" onclick="window.NovoClube.setProfileSubTab('historico')">
               Ver todas &gt;
             </button>
           </div>
