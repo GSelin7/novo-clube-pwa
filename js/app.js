@@ -673,7 +673,7 @@
           </div>
 
           <div class="home-cards-col">
-            <div class="status-card" onclick="window.NovoClube.navigate('colecao')">
+            <div class="status-card" onclick="window.NovoClube.openPointsTimelineModal()">
               <div class="status-card-header">
                 <span class="status-card-title">Minha coleção</span>
                 <span style="color:var(--text-muted);">${iconSvg('chevronRight')}</span>
@@ -1056,8 +1056,128 @@
   }
 
   // =========================================================
-  // 4. PÁGINA: COLEÇÃO
+  // 4. PÁGINA: COLEÇÃO + LINHA DO TEMPO DE PONTUAÇÃO (0, 500, 1000, 1500)
   // =========================================================
+  function renderPointsTimelineComponent(profile, isModal = false) {
+    const pts = profile.collectionPoints;
+    const maxPts = 1500;
+    const fillPct = Math.min(100, Math.max(0, (pts / maxPts) * 100));
+    const nextAstro = getNextTargetAstro(profile);
+    const faltaNext = Math.max(0, nextAstro.requiredPoints - pts);
+
+    // 4 marcos igualmente divididos: 0% (0 pts), 33.33% (500 pts), 66.66% (1000 pts), 100% (1500 pts)
+    const milestones = [
+      { astro: state.astros[0], points: 0, label: '0', sub: 'Cadastro', pos: 0 },
+      { astro: state.astros[1], points: 500, label: '500', sub: 'pontos', pos: 33.333 },
+      { astro: state.astros[2], points: 1000, label: '1.000', sub: 'pontos', pos: 66.666 },
+      { astro: state.astros[3], points: 1500, label: '1.500', sub: 'pontos', pos: 100 }
+    ];
+
+    const mascotsHtml = milestones
+      .map((m) => {
+        const reached = pts >= m.points;
+        const isNext = !reached && nextAstro.id === m.astro.id;
+        const stateClass = reached ? 'is-reached' : isNext ? 'is-next' : 'is-locked';
+        const tagText = reached ? '✓ Conquistado' : isNext ? `Faltam ${faltaNext} pts` : m.astro.shortName || m.astro.category;
+
+        return `
+          <div class="timeline-mascot-node ${stateClass}" style="left:${m.pos}%;" onclick="window.NovoClube.openAstroDetailModal('${m.astro.id}')" title="${m.astro.name}">
+            <span class="timeline-mascot-tag">${tagText}</span>
+            <img src="${m.astro.image3d}" alt="${m.astro.name}" />
+          </div>
+        `;
+      })
+      .join('');
+
+    const dotsHtml = milestones
+      .map((m) => {
+        const reached = pts >= m.points;
+        const isNext = !reached && nextAstro.id === m.astro.id;
+        const stateClass = reached ? 'is-reached' : isNext ? 'is-next' : '';
+        const innerSymbol = reached ? '★' : 'P';
+
+        return `
+          <div class="timeline-dot ${stateClass}" style="left:${m.pos}%;" onclick="window.NovoClube.openAstroDetailModal('${m.astro.id}')" title="${m.astro.name} (${m.label} pontos)">
+            ${innerSymbol}
+          </div>
+        `;
+      })
+      .join('');
+
+    const labelsHtml = milestones
+      .map((m) => {
+        const reached = pts >= m.points;
+        const isNext = !reached && nextAstro.id === m.astro.id;
+        const stateClass = reached ? 'is-reached' : isNext ? 'is-next' : '';
+
+        return `
+          <div class="timeline-label-node ${stateClass}" style="left:${m.pos}%;">
+            <span class="timeline-pts-num">${m.label}</span>
+            <span class="timeline-pts-sub">${m.sub}</span>
+          </div>
+        `;
+      })
+      .join('');
+
+    return `
+      <div class="points-timeline-card" style="${isModal ? 'margin-bottom:0; box-shadow:none; border:none; padding:6px 4px;' : ''}">
+        <div class="points-timeline-top">
+          <div>
+            <p class="section-eyebrow" style="margin-bottom:4px;">SISTEMA DE PONTUAÇÃO DA COLEÇÃO</p>
+            <h3>Sua Linha do Tempo Astro</h3>
+            <p>Você possui <strong style="color:var(--navy);">${pts} pontos acumulados</strong> de 1.500 pontos da jornada.</p>
+            <div class="points-timeline-current-pill">
+              ⭐ ${faltaNext > 0 ? `Faltam ${faltaNext} pontos para desbloquear o ${nextAstro.name}` : 'Parabéns! Você atingiu a pontuação máxima de 1.500 pontos!'}
+            </div>
+          </div>
+          <button type="button" class="btn-primary" onclick="window.NovoClube.closeModal(); window.NovoClube.openInvoiceModal();">
+            + Cadastrar nota
+          </button>
+        </div>
+
+        <div class="timeline-wrapper">
+          <div class="timeline-mascots-row">
+            ${mascotsHtml}
+          </div>
+
+          <div class="timeline-track-area">
+            <div class="timeline-line-bg">
+              <div class="timeline-line-fill" style="width:${fillPct}%;"></div>
+            </div>
+            ${dotsHtml}
+          </div>
+
+          <div class="timeline-labels-row">
+            ${labelsHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function openPointsTimelineModal() {
+    const profile = getActiveProfile();
+    const modalRoot = document.getElementById('modal-root');
+    if (!modalRoot) return;
+
+    modalRoot.innerHTML = `
+      <div class="modal-backdrop" onclick="if(event.target===this) window.NovoClube.closeModal()">
+        <div class="modal-card" style="max-width:680px; padding:28px 26px;">
+          <button type="button" class="modal-close" onclick="window.NovoClube.closeModal()" aria-label="Fechar">✕</button>
+          ${renderPointsTimelineComponent(profile, true)}
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:18px; padding-top:16px; border-top:1px solid var(--border-color); flex-wrap:wrap;">
+            <span style="font-size:0.8rem; color:var(--text-muted);">
+              Toque em qualquer bonequinho na linha para ver a pelúcia física no shopping.
+            </span>
+            <button type="button" class="btn-secondary" style="padding:9px 18px; font-size:0.84rem;" onclick="window.NovoClube.closeModal(); window.NovoClube.navigate('colecao');">
+              Ver página da Coleção &gt;
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   function renderAstrosGridItems(profile) {
     return state.astros
       .map((astro) => {
@@ -1118,6 +1238,7 @@
   function renderColecaoTab(profile) {
     return `
       <section class="page-section">
+        ${renderPointsTimelineComponent(profile, false)}
         <div class="collection-layout">
           <div>
             <p class="section-eyebrow">MINHA COLEÇÃO</p>
@@ -1212,14 +1333,14 @@
             </div>
 
             <div class="profile-kpis-grid">
-              <div class="kpi-card">
+              <div class="kpi-card" style="cursor:pointer;" onclick="window.NovoClube.openPointsTimelineModal()" title="Clique para abrir a Linha do Tempo da Pontuação">
                 <div class="kpi-icon" style="background:var(--red-bg); color:var(--red);">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </div>
                 <div>
-                  <div class="kpi-label">Pontos acumulados</div>
+                  <div class="kpi-label">Pontos acumulados &gt;</div>
                   <div class="kpi-val">${profile.collectionPoints} <span>pontos</span></div>
-                  <div class="kpi-sub">Total de pontos desde o início da campanha.</div>
+                  <div class="kpi-sub">Toque para ver a linha do tempo (0 a 1.500).</div>
                 </div>
               </div>
 
@@ -2327,6 +2448,7 @@
       renderApp(true);
     },
     openInvoiceModal,
+    openPointsTimelineModal,
     capturePhotoFrame,
     handleFileReceipt,
     confirmInvoiceSubmit,

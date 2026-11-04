@@ -1380,8 +1380,243 @@ button:active {
 }
 
 /* =========================================================
-   4. PÁGINA: COLEÇÃO (JORNADA DOS ASTROS)
+   4. PÁGINA: COLEÇÃO + LINHA DO TEMPO DE PONTUAÇÃO (4 BOLINHAS)
    ========================================================= */
+.points-timeline-card {
+  background: #FFFFFF;
+  border-radius: 28px;
+  padding: 28px 34px 32px;
+  box-shadow: var(--shadow-md);
+  border: 1.5px solid var(--border-color);
+  margin-bottom: 24px;
+}
+
+.points-timeline-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 26px;
+  flex-wrap: wrap;
+}
+
+.points-timeline-top h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.points-timeline-top p {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.points-timeline-current-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FEF3C7;
+  color: #92400E;
+  font-weight: 800;
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid #FDE68A;
+  margin-top: 6px;
+}
+
+/* Container da Linha do Tempo com 0% bem no começo e divisões exatas (0, 33.3%, 66.6%, 100%) */
+.timeline-wrapper {
+  position: relative;
+  padding: 10px 28px 6px;
+  user-select: none;
+}
+
+/* Fileira dos 4 Bonequinhos acima das 4 Bolinhas */
+.timeline-mascots-row {
+  position: relative;
+  height: 74px;
+  margin-bottom: 8px;
+}
+
+.timeline-mascot-node {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.timeline-mascot-node:hover {
+  transform: translateX(-50%) translateY(-4px) scale(1.06);
+}
+
+.timeline-mascot-node img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(10, 37, 64, 0.12));
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+.timeline-mascot-node.is-locked img {
+  opacity: 0.52;
+  filter: grayscale(35%) drop-shadow(0 2px 6px rgba(10, 37, 64, 0.08));
+}
+
+.timeline-mascot-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--navy);
+  background: #F1F5F9;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  margin-bottom: 3px;
+}
+
+.timeline-mascot-node.is-reached .timeline-mascot-tag {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.timeline-mascot-node.is-next .timeline-mascot-tag {
+  background: var(--red-bg);
+  color: var(--red);
+}
+
+/* Barra Horizontal + 4 Bolinhas */
+.timeline-track-area {
+  position: relative;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.timeline-line-bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: #E2E8F0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.timeline-line-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #F59E0B 0%, #DF1B2E 100%);
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.timeline-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #E2E8F0;
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 2px 8px rgba(10, 37, 64, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #64748B;
+  z-index: 2;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.25s ease;
+}
+
+.timeline-dot:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+.timeline-dot.is-reached {
+  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.22), 0 4px 10px rgba(245, 158, 11, 0.35);
+}
+
+.timeline-dot.is-next {
+  background: #FFFFFF;
+  border: 3px solid var(--red);
+  color: var(--red);
+  box-shadow: 0 0 0 4px rgba(223, 27, 46, 0.16);
+}
+
+/* Marcador da pontuação atual na linha */
+.timeline-user-marker {
+  position: absolute;
+  top: -6px;
+  transform: translateX(-50%);
+  background: var(--navy);
+  color: #FFFFFF;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  z-index: 3;
+  box-shadow: 0 4px 10px rgba(10, 37, 64, 0.2);
+}
+
+.timeline-user-marker::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 4px 4px 0;
+  border-style: solid;
+  border-color: var(--navy) transparent transparent;
+}
+
+/* Fileira das Pontuações (0, 500, 1.000, 1.500) abaixo das 4 Bolinhas */
+.timeline-labels-row {
+  position: relative;
+  height: 48px;
+  margin-top: 8px;
+}
+
+.timeline-label-node {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.timeline-pts-num {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+.timeline-pts-sub {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.timeline-label-node.is-reached .timeline-pts-num {
+  color: #D97706;
+}
+
+.timeline-label-node.is-next .timeline-pts-num {
+  color: var(--red);
+}
+
 .collection-layout {
   background: #FFFFFF;
   border-radius: 32px;
@@ -2083,7 +2318,49 @@ button:active {
     align-items: center;
   }
 
-  /* 4. COLEÇÃO MOBILE */
+  /* 4. COLEÇÃO + LINHA DO TEMPO MOBILE */
+  .points-timeline-card {
+    padding: 20px 14px 24px;
+    border-radius: 22px;
+    margin-bottom: 18px;
+  }
+
+  .points-timeline-top h3 {
+    font-size: 1.15rem;
+  }
+
+  .timeline-wrapper {
+    padding: 8px 22px 4px;
+  }
+
+  .timeline-mascots-row {
+    height: 62px;
+  }
+
+  .timeline-mascot-node img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .timeline-mascot-tag {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+  }
+
+  .timeline-dot {
+    width: 26px;
+    height: 26px;
+    font-size: 0.68rem;
+  }
+
+  .timeline-pts-num {
+    font-size: 0.78rem;
+  }
+
+  .timeline-pts-sub {
+    font-size: 0.65rem;
+  }
+
   .collection-layout {
     grid-template-columns: 1fr;
     padding: 24px 18px;
