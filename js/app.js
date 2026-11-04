@@ -1,5 +1,5 @@
-﻿(function () {
-  const STORAGE_KEY = 'novo_clube_state_v8';
+(function () {
+  const STORAGE_KEY = 'novo_clube_state_v9';
 
   // Estado Global da Aplicação
   let state = loadState();
@@ -65,16 +65,16 @@
     return `
       <a href="#inicio" class="brand-logo ${sizeClass}" onclick="window.NovoClube.navigate('inicio'); return false;" aria-label="Novo Clube">
         <svg viewBox="0 0 250 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 35V7H12.2L21.4 22.8V7H29.4V35H21.2L12 19.2V35H4Z" fill="#0A2540"/>
-          <circle cx="46.5" cy="21" r="14.5" fill="#0A2540"/>
-          <path d="M46.5 11.5L49.4 18.1L56 21L49.4 23.9L46.5 30.5L43.6 23.9L37 21L43.6 18.1L46.5 11.5Z" fill="#FFFFFF"/>
-          <path d="M68.5 35L59.5 7H68.4L73.6 25.4L78.8 7H87.7L78.7 35H68.5Z" fill="#0A2540"/>
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M102.5 35.5C110.784 35.5 117 29.232 117 21C117 12.768 110.784 6.5 102.5 6.5C94.2157 6.5 88 12.768 88 21C88 29.232 94.2157 35.5 102.5 35.5ZM102.5 27.8C106.09 27.8 108.7 25.02 108.7 21C108.7 16.98 106.09 14.2 102.5 14.2C98.9101 14.2 96.3 16.98 96.3 21C96.3 25.02 98.9101 27.8 102.5 27.8Z" fill="#0A2540"/>
-          <path d="M135.8 35.5C128.4 35.5 123.5 30.1 123.5 21C123.5 11.9 128.4 6.5 135.8 6.5C141.7 6.5 145.8 9.9 146.7 15.6H139C138.4 13.7 137.3 12.8 135.7 12.8C132.9 12.8 131.5 15.6 131.5 21C131.5 26.4 132.9 29.2 135.7 29.2C137.3 29.2 138.4 28.3 139 26.4H146.7C145.8 32.1 141.7 35.5 135.8 35.5Z" fill="#DF1B2E"/>
-          <path d="M150 35V7H157.8V28.6H168.2V35H150Z" fill="#DF1B2E"/>
-          <path d="M181.6 35.5C174.5 35.5 170.5 31.3 170.5 23.7V7H178.3V23.5C178.3 27.2 179.5 29.1 181.8 29.1C184.1 29.1 185.3 27.2 185.3 23.5V7H193.1V23.7C193.1 31.3 189.1 35.5 181.6 35.5Z" fill="#DF1B2E"/>
-          <path d="M197 35V7H208.8C214.6 7 218.1 9.7 218.1 14.1C218.1 17.2 216.5 19.3 213.8 20.1C217.1 20.9 218.9 23.3 218.9 26.9C218.9 32 215.1 35 209 35H197ZM204.6 18.1H207.8C209.6 18.1 210.6 17.1 210.6 15.3C210.6 13.6 209.6 12.6 207.8 12.6H204.6V18.1ZM204.6 29.2H208.1C210.1 29.2 211.2 28.1 211.2 26.2C211.2 24.2 210.1 23.2 208.1 23.2H204.6V29.2Z" fill="#DF1B2E"/>
-          <path d="M222.5 35V7H241.5V13.2H230.3V17.9H239.8V23.9H230.3V28.8H241.8V35H222.5Z" fill="#DF1B2E"/>
+          <path d="M4 35V7H12.2L21.4 22.8V7H29.4V35H21.2L12 19.2V35H4Z" fill="#002745"/>
+          <circle cx="46.5" cy="21" r="14.5" fill="#002745"/>
+          <path d="M46.5 11.5L49.4 18.1L56 21L49.4 23.9L46.5 30.5L43.6 23.9L37 21L43.6 18.1L46.5 11.5Z" fill="#ffffff"/>
+          <path d="M68.5 35L59.5 7H68.4L73.6 25.4L78.8 7H87.7L78.7 35H68.5Z" fill="#002745"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M102.5 35.5C110.784 35.5 117 29.232 117 21C117 12.768 110.784 6.5 102.5 6.5C94.2157 6.5 88 12.768 88 21C88 29.232 94.2157 35.5 102.5 35.5ZM102.5 27.8C106.09 27.8 108.7 25.02 108.7 21C108.7 16.98 106.09 14.2 102.5 14.2C98.9101 14.2 96.3 16.98 96.3 21C96.3 25.02 98.9101 27.8 102.5 27.8Z" fill="#002745"/>
+          <path d="M135.8 35.5C128.4 35.5 123.5 30.1 123.5 21C123.5 11.9 128.4 6.5 135.8 6.5C141.7 6.5 145.8 9.9 146.7 15.6H139C138.4 13.7 137.3 12.8 135.7 12.8C132.9 12.8 131.5 15.6 131.5 21C131.5 26.4 132.9 29.2 135.7 29.2C137.3 29.2 138.4 28.3 139 26.4H146.7C145.8 32.1 141.7 35.5 135.8 35.5Z" fill="#ff1d23"/>
+          <path d="M150 35V7H157.8V28.6H168.2V35H150Z" fill="#ff1d23"/>
+          <path d="M181.6 35.5C174.5 35.5 170.5 31.3 170.5 23.7V7H178.3V23.5C178.3 27.2 179.5 29.1 181.8 29.1C184.1 29.1 185.3 27.2 185.3 23.5V7H193.1V23.7C193.1 31.3 189.1 35.5 181.6 35.5Z" fill="#ff1d23"/>
+          <path d="M197 35V7H208.8C214.6 7 218.1 9.7 218.1 14.1C218.1 17.2 216.5 19.3 213.8 20.1C217.1 20.9 218.9 23.3 218.9 26.9C218.9 32 215.1 35 209 35H197ZM204.6 18.1H207.8C209.6 18.1 210.6 17.1 210.6 15.3C210.6 13.6 209.6 12.6 207.8 12.6H204.6V18.1ZM204.6 29.2H208.1C210.1 29.2 211.2 28.1 211.2 26.2C211.2 24.2 210.1 23.2 208.1 23.2H204.6V29.2Z" fill="#ff1d23"/>
+          <path d="M222.5 35V7H241.5V13.2H230.3V17.9H239.8V23.9H230.3V28.8H241.8V35H222.5Z" fill="#ff1d23"/>
         </svg>
       </a>
     `;
@@ -510,7 +510,7 @@
           <div class="profiles-grid">
             ${cardsHtml}
             <button type="button" class="profile-item" onclick="window.NovoClube.openNewProfileModal()">
-              <div class="profile-avatar-lg" style="background:#F1F5F9; color:#0A2540; border:2px dashed #94A3B8;">
+              <div class="profile-avatar-lg" style="background:#F1F5F9; color:#002745; border:2px dashed #94A3B8;">
                 +
               </div>
               <div class="profile-item-name">Novo perfil</div>
@@ -1654,7 +1654,7 @@
             </div>
             <div class="camera-scan-frame">
               <div class="camera-scan-line"></div>
-              <span style="background:rgba(10,37,64,0.8); color:#fff; font-size:0.72rem; padding:4px 10px; border-radius:999px;">
+              <span style="background:rgba(0,39,69,0.85); color:#ffffff; font-size:0.72rem; padding:4px 10px; border-radius:999px;">
                 Leitor Óptico Novo Clube
               </span>
             </div>

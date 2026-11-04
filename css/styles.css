@@ -1,33 +1,147 @@
+/* =========================================================
+   FONTES OFICIAIS DO PROJETO:
+   1. Bespoke Sans — Fonte Principal (Títulos, Botões, Navegação, Destaques)
+   2. Ranade — Fonte Secundária (Textos menores, Descrições, Subtítulos)
+   ========================================================= */
+@font-face {
+  font-family: 'Bespoke Sans';
+  src: url('../assets/fonts/BespokeSans-Variable.ttf') format('truetype'),
+       url('../assets/fonts/BespokeSans-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bespoke Sans';
+  src: url('../assets/fonts/BespokeSans-Variable.ttf') format('truetype'),
+       url('../assets/fonts/BespokeSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bespoke Sans';
+  src: url('../assets/fonts/BespokeSans-Variable.ttf') format('truetype'),
+       url('../assets/fonts/BespokeSans-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bespoke Sans';
+  src: url('../assets/fonts/BespokeSans-Variable.ttf') format('truetype'),
+       url('../assets/fonts/BespokeSans-Bold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bespoke Sans';
+  src: url('../assets/fonts/BespokeSans-Variable.ttf') format('truetype'),
+       url('../assets/fonts/BespokeSans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bespoke Sans';
+  src: url('../assets/fonts/BespokeSans-Variable.ttf') format('truetype'),
+       url('../assets/fonts/BespokeSans-Extrabold.otf') format('opentype');
+  font-weight: 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bespoke Sans';
+  src: url('../assets/fonts/BespokeSans-VariableItalic.ttf') format('truetype'),
+       url('../assets/fonts/BespokeSans-Italic.otf') format('opentype');
+  font-weight: 300 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('../assets/fonts/Ranade-Variable.ttf') format('truetype'),
+       url('../assets/fonts/Ranade-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('../assets/fonts/Ranade-Variable.ttf') format('truetype'),
+       url('../assets/fonts/Ranade-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('../assets/fonts/Ranade-Variable.ttf') format('truetype'),
+       url('../assets/fonts/Ranade-Medium.otf') format('opentype');
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('../assets/fonts/Ranade-Variable.ttf') format('truetype'),
+       url('../assets/fonts/Ranade-Bold.otf') format('opentype');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ranade';
+  src: url('../assets/fonts/Ranade-VariableItalic.ttf') format('truetype'),
+       url('../assets/fonts/Ranade-Italic.otf') format('opentype');
+  font-weight: 300 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
-  --navy: #0A2540;
-  --navy-dark: #06182C;
-  --navy-light: #1E3A5F;
-  --red: #DF1B2E;
-  --red-hover: #BE1223;
-  --red-soft: #FAD8DC;
-  --red-bg: #FFF1F2;
-  --blue: #1D63B8;
-  --blue-bright: #2563EB;
-  --blue-soft: #DCE8F8;
-  --blue-bg: #EFF6FF;
+  --navy: #002745;
+  --navy-dark: #00192D;
+  --navy-light: #003B68;
+  --red: #ff1d23;
+  --red-hover: #d9141a;
+  --red-soft: #FFD6D7;
+  --red-bg: #FFF0F0;
+  --blue: #002745;
+  --blue-bright: #003B68;
+  --blue-soft: #D6E4F0;
+  --blue-bg: #EDF3F8;
   --green: #16A34A;
   --green-bg: #DCFCE7;
   --amber: #D97706;
   --amber-bg: #FEF3C7;
   --bg-page: #F4F6F9;
-  --bg-card: #FFFFFF;
-  --text-main: #0A2540;
-  --text-muted: #64748B;
-  --text-light: #94A3B8;
-  --border-color: #E8EEF5;
-  --shadow-sm: 0 2px 8px rgba(10, 37, 64, 0.04);
-  --shadow-md: 0 8px 24px rgba(10, 37, 64, 0.06);
-  --shadow-lg: 0 16px 40px rgba(10, 37, 64, 0.12);
+  --bg-card: #ffffff;
+  --text-main: #002745;
+  --text-muted: #52657A;
+  --text-light: #8A9BB0;
+  --border-color: #E2EAF2;
+  --shadow-sm: 0 2px 8px rgba(0, 39, 69, 0.05);
+  --shadow-md: 0 8px 24px rgba(0, 39, 69, 0.07);
+  --shadow-lg: 0 16px 40px rgba(0, 39, 69, 0.14);
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 24px;
   --radius-pill: 9999px;
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Bespoke Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-secondary: 'Ranade', 'Bespoke Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
@@ -46,8 +160,26 @@ html, body {
   overflow-x: hidden;
 }
 
-button, input, select {
-  font-family: inherit;
+h1, h2, h3, h4, h5, h6, strong, button, input, select {
+  font-family: var(--font-sans);
+}
+
+/* Textos menores e descrições secundárias usam a fonte Ranade */
+p,
+.home-subtitle,
+.status-card-caption,
+.section-desc,
+.step-card p,
+.benefit-detail-desc,
+.benefit-rules-list li,
+.field-feedback,
+.profile-item-role,
+.profile-user-box span,
+.kpi-sub,
+.movement-date,
+.timeline-pts-sub,
+.astro-req-locked {
+  font-family: var(--font-secondary);
 }
 
 button {
@@ -95,17 +227,17 @@ button:active {
   justify-content: center;
   gap: 8px;
   background: var(--red);
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: 700;
   font-size: 0.95rem;
   padding: 13px 26px;
   border-radius: var(--radius-pill);
-  box-shadow: 0 4px 14px rgba(223, 27, 46, 0.28);
+  box-shadow: 0 4px 14px rgba(255, 29, 35, 0.28);
 }
 
 .btn-primary:hover {
   background: var(--red-hover);
-  box-shadow: 0 6px 18px rgba(223, 27, 46, 0.36);
+  box-shadow: 0 6px 18px rgba(255, 29, 35, 0.36);
   transform: translateY(-1px);
 }
 
@@ -114,7 +246,7 @@ button:active {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #FFFFFF;
+  background: #ffffff;
   color: var(--navy);
   font-weight: 700;
   font-size: 0.95rem;
@@ -135,7 +267,7 @@ button:active {
   justify-content: center;
   gap: 8px;
   background: var(--navy);
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: 700;
   font-size: 0.9rem;
   padding: 11px 22px;
@@ -172,11 +304,11 @@ button:active {
 }
 
 .progress-fill--red {
-  background: linear-gradient(90deg, #DF1B2E 0%, #F43F5E 100%);
+  background: linear-gradient(90deg, #ff1d23 0%, #ff4d52 100%);
 }
 
 .progress-fill--blue {
-  background: linear-gradient(90deg, #1D63B8 0%, #3B82F6 100%);
+  background: linear-gradient(90deg, #002745 0%, #004478 100%);
 }
 
 /* =========================================================
@@ -188,15 +320,15 @@ button:active {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: radial-gradient(circle at 85% 15%, rgba(223, 27, 46, 0.08), transparent 40%),
-              radial-gradient(circle at 15% 85%, rgba(29, 99, 184, 0.1), transparent 45%),
+  background: radial-gradient(circle at 85% 15%, rgba(255, 29, 35, 0.08), transparent 40%),
+              radial-gradient(circle at 15% 85%, rgba(0, 39, 69, 0.1), transparent 45%),
               var(--bg-page);
 }
 
 .auth-container {
   width: 100%;
   max-width: 980px;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 32px;
   box-shadow: var(--shadow-lg);
   display: grid;
@@ -206,8 +338,8 @@ button:active {
 }
 
 .auth-hero {
-  background: linear-gradient(145deg, #0A2540 0%, #10355C 100%);
-  color: #FFFFFF;
+  background: linear-gradient(145deg, #002745 0%, #003B68 100%);
+  color: #ffffff;
   padding: 44px 40px;
   display: flex;
   flex-direction: column;
@@ -223,7 +355,7 @@ button:active {
   bottom: -60px;
   width: 240px;
   height: 240px;
-  background: rgba(223, 27, 46, 0.18);
+  background: rgba(255, 29, 35, 0.22);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -351,13 +483,13 @@ button:active {
 .form-input:focus {
   outline: none;
   border-color: var(--blue);
-  background: #FFFFFF;
-  box-shadow: 0 0 0 3px rgba(29, 99, 184, 0.1);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 39, 69, 0.1);
 }
 
 .form-input.is-valid {
   border-color: #86EFAC;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 .form-input.is-invalid {
@@ -366,7 +498,7 @@ button:active {
 }
 
 .form-input.is-invalid:focus {
-  box-shadow: 0 0 0 3px rgba(223, 27, 46, 0.08);
+  box-shadow: 0 0 0 3px rgba(255, 29, 35, 0.1);
 }
 
 .input-status-icon {
@@ -678,12 +810,12 @@ button:active {
 }
 
 .mobile-nav-item.active {
-  color: var(--blue);
+  color: var(--navy);
   font-weight: 800;
 }
 
 .mobile-nav-item.active svg {
-  fill: rgba(29, 99, 184, 0.14);
+  fill: rgba(0, 39, 69, 0.12);
 }
 
 /* =========================================================
@@ -1509,7 +1641,7 @@ button:active {
 
 .timeline-line-fill {
   height: 100%;
-  background: linear-gradient(90deg, #F59E0B 0%, #DF1B2E 100%);
+  background: linear-gradient(90deg, #002745 0%, #ff1d23 100%);
   border-radius: 999px;
   transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -1522,8 +1654,8 @@ button:active {
   height: 32px;
   border-radius: 50%;
   background: #E2E8F0;
-  border: 3px solid #FFFFFF;
-  box-shadow: 0 2px 8px rgba(10, 37, 64, 0.14);
+  border: 3px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 39, 69, 0.14);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1540,16 +1672,16 @@ button:active {
 }
 
 .timeline-dot.is-reached {
-  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
-  color: #FFFFFF;
-  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.22), 0 4px 10px rgba(245, 158, 11, 0.35);
+  background: linear-gradient(135deg, #002745 0%, #003B68 100%);
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(0, 39, 69, 0.18), 0 4px 10px rgba(0, 39, 69, 0.28);
 }
 
 .timeline-dot.is-next {
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid var(--red);
   color: var(--red);
-  box-shadow: 0 0 0 4px rgba(223, 27, 46, 0.16);
+  box-shadow: 0 0 0 4px rgba(255, 29, 35, 0.16);
 }
 
 /* Marcador da pontuação atual na linha */
@@ -2076,8 +2208,8 @@ button:active {
   left: 8%;
   right: 8%;
   height: 2px;
-  background: #DF1B2E;
-  box-shadow: 0 0 12px #DF1B2E;
+  background: #ff1d23;
+  box-shadow: 0 0 12px #ff1d23;
   animation: scanMove 2.2s infinite ease-in-out;
 }
 

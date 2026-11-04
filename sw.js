@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'novo-clube-pwa-v8';
+const CACHE_NAME = 'novo-clube-pwa-v9';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -6,6 +6,15 @@ const ASSETS_TO_CACHE = [
   './css/styles.css',
   './js/data.js',
   './js/app.js',
+  './assets/fonts/BespokeSans-Variable.ttf',
+  './assets/fonts/BespokeSans-Regular.otf',
+  './assets/fonts/BespokeSans-Medium.otf',
+  './assets/fonts/BespokeSans-Bold.otf',
+  './assets/fonts/BespokeSans-Extrabold.otf',
+  './assets/fonts/Ranade-Variable.ttf',
+  './assets/fonts/Ranade-Regular.otf',
+  './assets/fonts/Ranade-Medium.otf',
+  './assets/fonts/Ranade-Bold.otf',
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',
   './assets/icons/apple-touch-icon.png',
