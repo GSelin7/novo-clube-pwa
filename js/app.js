@@ -1,5 +1,5 @@
 (function () {
-  const STORAGE_KEY = 'novo_clube_state_v14';
+  const STORAGE_KEY = 'novo_clube_state_v15';
 
   // Estado Global da Aplicação
   let state = loadState();
