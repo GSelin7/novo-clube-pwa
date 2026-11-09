@@ -1,5 +1,5 @@
 (function () {
-  const STORAGE_KEY = 'novo_clube_state_v9';
+  const STORAGE_KEY = 'novo_clube_state_v11';
 
   // Estado Global da Aplicação
   let state = loadState();
@@ -13,7 +13,9 @@
   let capturedReceiptImage = null;
 
   function normalizeEmail(email) {
-    return (email || '').trim().toLowerCase();
+    const clean = (email || '').trim().toLowerCase();
+    if (clean === 'teste') return 'teste@email.com';
+    return clean;
   }
 
   function loadState() {
@@ -110,7 +112,8 @@
   // VALIDAÇÃO SUTIL EM TEMPO REAL (SEM POPUP NATIVO GENÉRICO)
   // =========================================================
   function isValidEmail(val) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val.trim());
+    const clean = val.trim().toLowerCase();
+    return clean === 'teste' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(clean);
   }
 
   function setFieldValidationState(inputId, isValid, message, isNeutral = false) {
