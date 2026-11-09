@@ -1,4 +1,4 @@
-const CACHE_NAME = 'novo-clube-pwa-v12';
+const CACHE_NAME = 'novo-clube-pwa-v13';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -18,6 +18,8 @@ const ASSETS_TO_CACHE = [
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',
   './assets/icons/apple-touch-icon.png',
+  './assets/images/astros/astro-hero-loop.webp',
+  './assets/images/astros/astro-hero-loop.gif',
   './assets/images/astros/astro-hero-desktop.png',
   './assets/images/astros/astro-hero-mobile.png',
   './assets/images/astros/astro-banner-perfil.png',

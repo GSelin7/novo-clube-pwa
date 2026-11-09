@@ -675,7 +675,10 @@
           </div>
 
           <div class="home-mascot-center">
-            <img src="assets/images/astros/astro-hero-desktop.png?v=8" alt="Astro Serviços — Mascote Novo Clube" />
+            <picture>
+              <source srcset="assets/images/astros/astro-hero-loop.webp?v=13" type="image/webp" />
+              <img src="assets/images/astros/astro-hero-loop.gif?v=13" alt="Astros — Mascotes Novo Clube" />
+            </picture>
           </div>
 
           <div class="home-cards-col">
