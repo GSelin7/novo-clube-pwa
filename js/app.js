@@ -1,5 +1,5 @@
 (function () {
-  const STORAGE_KEY = 'novo_clube_state_v12';
+  const STORAGE_KEY = 'novo_clube_state_v14';
 
   // Estado Global da Aplicação
   let state = loadState();
@@ -24,6 +24,8 @@
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed && Array.isArray(parsed.profiles)) {
+          parsed.benefits = JSON.parse(JSON.stringify(window.NOVO_CLUBE_DEFAULT_DATA.benefits));
+          parsed.monthsMeta = JSON.parse(JSON.stringify(window.NOVO_CLUBE_DEFAULT_DATA.monthsMeta || {}));
           return parsed;
         }
       }
@@ -837,6 +839,18 @@
   // =========================================================
   // 3. PÁGINA: BENEFÍCIOS (LISTAGEM + PÁGINA INTERNA DE DETALHES)
   // =========================================================
+  function renderBenefitsMonthMeta() {
+    const metaMap = state.monthsMeta || (window.NOVO_CLUBE_DEFAULT_DATA && window.NOVO_CLUBE_DEFAULT_DATA.monthsMeta) || {};
+    const meta = metaMap[state.currentMonth];
+    if (!meta) return '';
+    return `
+      <div class="month-focus-box subtle-update">
+        <strong class="month-focus-title">${meta.title}</strong>
+        <p class="month-focus-text"><strong>Foco:</strong> ${meta.focus}</p>
+      </div>
+    `;
+  }
+
   function renderBenefitsGridItems() {
     const filteredBenefits = state.benefits.filter((b) => {
       if (b.month !== state.currentMonth) return false;
@@ -846,7 +860,8 @@
       if (
         benefitSearchQuery.trim() !== '' &&
         !b.title.toLowerCase().includes(benefitSearchQuery.toLowerCase()) &&
-        !b.partner.toLowerCase().includes(benefitSearchQuery.toLowerCase())
+        !b.partner.toLowerCase().includes(benefitSearchQuery.toLowerCase()) &&
+        !b.category.toLowerCase().includes(benefitSearchQuery.toLowerCase())
       ) {
         return false;
       }
@@ -869,6 +884,7 @@
           <article class="benefit-card" onclick="window.NovoClube.openBenefitDetail('${b.id}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.NovoClube.openBenefitDetail('${b.id}');}">
             <div class="benefit-img-wrap">
               <img src="${b.image}" alt="${b.title}" loading="lazy" />
+              <span class="benefit-card-cat">${b.category}</span>
             </div>
             <div class="benefit-content">
               <div class="benefit-text-col">
@@ -999,7 +1015,7 @@
       selectedBenefitId = null;
     }
 
-    const categories = ['Todos', 'Alimentação', 'Lazer', 'Serviços'];
+    const categories = ['Todos', 'Lazer', 'Compras', 'Esportes', 'Geral'];
 
     return `
       <section class="page-section">
@@ -1023,7 +1039,11 @@
                 .join('')}
             </div>
 
-            <div style="margin-top:22px; padding:14px 18px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.24); border-radius:16px; display:inline-flex; align-items:center; gap:10px;">
+            <div id="benefits-month-meta-slot">
+              ${renderBenefitsMonthMeta()}
+            </div>
+
+            <div style="margin-top:16px; padding:14px 18px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.24); border-radius:16px; display:inline-flex; align-items:center; gap:10px;">
               <span style="font-size:0.84rem; color:rgba(255,255,255,0.88);">Seu saldo disponível:</span>
               <strong id="benefits-balance-Number" style="font-size:1.05rem; color:#ffffff;">${profile.benefitBalance} pontos</strong>
             </div>
@@ -2368,6 +2388,11 @@
         btn.classList.toggle('active', btn.getAttribute('data-month-pill') === month);
       });
 
+      const benefitsMetaSlot = document.getElementById('benefits-month-meta-slot');
+      if (benefitsMetaSlot) {
+        benefitsMetaSlot.innerHTML = renderBenefitsMonthMeta();
+      }
+
       const benefitsSlot = document.getElementById('benefits-grid-slot');
       if (benefitsSlot) {
         benefitsSlot.innerHTML = renderBenefitsGridItems();
@@ -2386,6 +2411,11 @@
         btn.classList.toggle('active', btn.getAttribute('data-cat-pill') === cat);
       });
 
+      const benefitsMetaSlot = document.getElementById('benefits-month-meta-slot');
+      if (benefitsMetaSlot) {
+        benefitsMetaSlot.innerHTML = renderBenefitsMonthMeta();
+      }
+
       const benefitsSlot = document.getElementById('benefits-grid-slot');
       if (benefitsSlot) {
         benefitsSlot.innerHTML = renderBenefitsGridItems();
@@ -2394,6 +2424,11 @@
     setBenefitSearch(query) {
       benefitSearchQuery = query;
       // Atualiza SOMENTE o grid de resultados, mantendo o campo de busca intocado e sem piscar a tela!
+      const benefitsMetaSlot = document.getElementById('benefits-month-meta-slot');
+      if (benefitsMetaSlot) {
+        benefitsMetaSlot.innerHTML = renderBenefitsMonthMeta();
+      }
+
       const benefitsSlot = document.getElementById('benefits-grid-slot');
       if (benefitsSlot) {
         benefitsSlot.innerHTML = renderBenefitsGridItems();

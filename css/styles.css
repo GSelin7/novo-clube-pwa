@@ -1229,6 +1229,28 @@ button:active {
   color: #ffffff;
 }
 
+.month-focus-box {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.month-focus-title {
+  display: block;
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.month-focus-text {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.84);
+  line-height: 1.45;
+}
+
 .benefits-toolbar {
   display: flex;
   align-items: center;
@@ -1295,7 +1317,7 @@ button:active {
 
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
@@ -1490,6 +1512,21 @@ button:active {
   height: 128px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.benefit-card-cat {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--red);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
 }
 
 .benefit-img-wrap img {
