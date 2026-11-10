@@ -1,8 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.SUPABASE_URL || '';
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || '';
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
+const supabaseUrl = process.env.SUPABASE_URL || 'https://placeholder-configure-env.supabase.co';
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || 'placeholder-anon-key';
+const supabaseServiceKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  'placeholder-service-role-key';
+
+export const isSupabaseConfigured = Boolean(
+  process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY
+);
 
 /**
  * Cliente público (respeita RLS e permissões de usuário)
@@ -63,6 +70,12 @@ export function sendJson(res, statusCode, payload) {
  */
 export function handleError(res, error, defaultMessage = 'Erro interno do servidor') {
   console.error('[API Error]:', error);
+  if (!isSupabaseConfigured) {
+    return res.status(503).json({
+      success: false,
+      error: 'Variáveis de ambiente do Supabase (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY) ainda não configuradas na Vercel.'
+    });
+  }
   const status = error.status || 500;
   const message = error.message || defaultMessage;
   res.status(status).json({ success: false, error: message });
