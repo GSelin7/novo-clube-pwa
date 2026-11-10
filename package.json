@@ -1,0 +1,12 @@
+{
+  "name": "novo-clube-pwa",
+  "version": "1.0.0",
+  "description": "Novo Clube PWA — Backend Node.js Serverless na Vercel com Supabase",
+  "type": "module",
+  "scripts": {
+    "start": "python -m http.server 8080"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.46.1"
+  }
+}
