@@ -1,5 +1,119 @@
 (function () {
-  const STORAGE_KEY = 'novo_clube_state_v15';
+  const STORAGE_KEY = 'novo_clube_state_v16';
+  const TOKEN_KEY = 'novo_clube_jwt_token';
+  const API_BASE = '/api';
+
+  let authToken = localStorage.getItem(TOKEN_KEY) || null;
+
+  function setAuthToken(token) {
+    authToken = token;
+    if (token) {
+      localStorage.setItem(TOKEN_KEY, token);
+    } else {
+      localStorage.removeItem(TOKEN_KEY);
+    }
+  }
+
+  async function apiCall(endpoint, method = 'GET', body = null) {
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+      const res = await fetch(`${API_BASE}${endpoint}`, {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : undefined
+      });
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.erro || errJson.error || `HTTP ${res.status}`);
+      }
+      return await res.json();
+    } catch (err) {
+      console.warn(`[NovoClube API] ${method} ${endpoint}:`, err.message);
+      return null;
+    }
+  }
+
+  function mapDbProfileToClient(dbProf, existing = {}) {
+    return {
+      id: dbProf.id,
+      name: dbProf.nome || existing.name || 'Cliente',
+      shortName: dbProf.nome_curto || existing.shortName || dbProf.nome || 'Cliente',
+      initials: dbProf.iniciais || existing.iniciais || 'NC',
+      role: dbProf.papel || existing.role || 'Titular • Família',
+      email: dbProf.email || existing.email || state.accountEmail,
+      phone: dbProf.telefone || existing.phone || '(16) 99123-4567',
+      avatarBg: dbProf.avatar_bg || existing.avatarBg || '#B8D4F2',
+      avatarColor: dbProf.avatar_cor || existing.avatarColor || '#1E40AF',
+      collectionPoints: typeof dbProf.pontos_colecao === 'number' ? dbProf.pontos_colecao : (existing.collectionPoints || 0),
+      benefitBalance: typeof dbProf.saldo_beneficios === 'number' ? dbProf.saldo_beneficios : (existing.benefitBalance || 0),
+      invoicesCount: typeof dbProf.quantidade_notas === 'number' ? dbProf.quantidade_notas : (existing.invoicesCount || 0),
+      lastInvoiceDate: dbProf.data_ultima_nota ? new Date(dbProf.data_ultima_nota).toLocaleDateString('pt-BR') : (existing.lastInvoiceDate || new Date().toLocaleDateString('pt-BR')),
+      redeemedBenefits: existing.redeemedBenefits || [],
+      invoices: existing.invoices || [],
+      transactions: existing.transactions || []
+    };
+  }
+
+  async function syncProfileDataFromApi(profileId) {
+    if (!authToken || !profileId) return;
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(profileId);
+    if (!isUuid) return;
+
+    try {
+      const [resVouchers, resNotas, resTx] = await Promise.all([
+        apiCall(`/resgates?perfilId=${profileId}`),
+        apiCall(`/notas-fiscais?perfilId=${profileId}`),
+        apiCall(`/transacoes?perfilId=${profileId}`)
+      ]);
+
+      const prof = state.profiles.find((p) => p.id === profileId);
+      if (!prof) return;
+
+      if (resVouchers && Array.isArray(resVouchers.vouchers)) {
+        prof.redeemedBenefits = resVouchers.vouchers.map((v) => ({
+          id: v.id,
+          title: v.titulo,
+          partner: v.parceiro,
+          points: v.pontos,
+          date: new Date(v.resgatado_em).toLocaleDateString('pt-BR'),
+          code: v.codigo_voucher,
+          status: v.status
+        }));
+      }
+
+      if (resNotas && Array.isArray(resNotas.notas_fiscais)) {
+        prof.invoices = resNotas.notas_fiscais.map((n) => ({
+          id: n.id,
+          store: n.loja_nome,
+          cnpj: n.cnpj,
+          value: parseFloat(n.valor) || 0,
+          points: n.pontos,
+          date: n.data_emissao ? new Date(n.data_emissao + 'T12:00:00').toLocaleDateString('pt-BR') : new Date().toLocaleDateString('pt-BR'),
+          category: n.categoria
+        }));
+        prof.invoicesCount = prof.invoices.length;
+      }
+
+      if (resTx && Array.isArray(resTx.transacoes)) {
+        prof.transactions = resTx.transacoes.map((t) => ({
+          id: t.id,
+          type: t.tipo,
+          title: t.titulo,
+          subtitle: t.subtitulo,
+          points: t.pontos,
+          date: new Date(t.criado_em).toLocaleDateString('pt-BR')
+        }));
+      }
+
+      saveState();
+      renderApp(false);
+    } catch (err) {
+      console.warn('Sync profile fallback:', err);
+    }
+  }
 
   // Estado Global da Aplicação
   let state = loadState();
@@ -1818,15 +1932,17 @@
     const todayStr = new Date().toLocaleDateString('pt-BR');
     profile.lastInvoiceDate = todayStr;
 
-    profile.invoices.unshift({
-      id: 'nf-' + Date.now(),
+    const localNfId = 'nf-' + Date.now();
+    const newInvoiceObj = {
+      id: localNfId,
       store: storeObj.name,
       cnpj: storeObj.cnpj,
       value: rawVal,
       points: pointsEarned,
       date: todayStr,
       category: storeObj.category
-    });
+    };
+    profile.invoices.unshift(newInvoiceObj);
 
     profile.transactions.unshift({
       id: 'tx-' + Date.now(),
@@ -1839,6 +1955,32 @@
 
     saveState();
     stopCameraStream();
+
+    // Integração Passo 3: Envio de Nota Fiscal para o Supabase (/api/notas-fiscais)
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(profile.id);
+    if (authToken && isUuid) {
+      apiCall('/notas-fiscais', 'POST', {
+        perfilId: profile.id,
+        lojaNome: storeObj.name,
+        cnpj: storeObj.cnpj,
+        categoria: storeObj.category,
+        valor: rawVal
+      }).then((res) => {
+        if (res && res.sucesso && res.dados) {
+          if (res.dados.nota_id) {
+            newInvoiceObj.id = res.dados.nota_id;
+          }
+          if (typeof res.dados.novo_pontos_colecao === 'number') {
+            profile.collectionPoints = res.dados.novo_pontos_colecao;
+          }
+          if (typeof res.dados.novo_saldo_beneficios === 'number') {
+            profile.benefitBalance = res.dados.novo_saldo_beneficios;
+          }
+          saveState();
+          renderApp(false);
+        }
+      }).catch((e) => console.warn('Sync nota fiscal fallback:', e));
+    }
 
     const newlyUnlockedAstro = state.astros.find(
       (a) =>
@@ -1921,14 +2063,15 @@
       '-' +
       Math.floor(100 + Math.random() * 900);
 
-    profile.redeemedBenefits.unshift({
+    const redeemedObj = {
       id: 'red-' + Date.now(),
       title: benefit.title,
       partner: benefit.partner,
       points: benefit.points,
       date: todayStr,
       code: voucherCode
-    });
+    };
+    profile.redeemedBenefits.unshift(redeemedObj);
 
     profile.transactions.unshift({
       id: 'tx-' + Date.now(),
@@ -1957,7 +2100,7 @@
 
             <div style="background:#F8FAFC; border:2px dashed #CBD5E1; border-radius:18px; padding:16px; margin-bottom:16px;">
               <span style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">APRESENTE ESTE CÓDIGO NA LOJA</span>
-              <strong style="font-size:1.4rem; letter-spacing:0.08em; color:var(--navy);">${voucherCode}</strong>
+              <strong id="redeemed-voucher-code-display" style="font-size:1.4rem; letter-spacing:0.08em; color:var(--navy);">${voucherCode}</strong>
             </div>
 
             <div style="font-size:0.82rem; color:var(--text-muted); background:var(--green-bg); color:var(--green); padding:10px 14px; border-radius:12px; margin-bottom:18px; font-weight:700;">
@@ -1970,6 +2113,27 @@
           </div>
         </div>
       `;
+    }
+
+    // Integração Passo 4: Resgate Atômico no Supabase (/api/resgates)
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(profile.id);
+    if (authToken && isUuid) {
+      apiCall('/resgates', 'POST', {
+        perfilId: profile.id,
+        beneficioId: benefit.id
+      }).then((res) => {
+        if (res && res.sucesso && res.dados) {
+          if (res.dados.codigo_voucher) {
+            redeemedObj.code = res.dados.codigo_voucher;
+            const codeEl = document.getElementById('redeemed-voucher-code-display');
+            if (codeEl) codeEl.textContent = res.dados.codigo_voucher;
+          }
+          if (res.dados.resgate_id) {
+            redeemedObj.id = res.dados.resgate_id;
+          }
+          saveState();
+        }
+      }).catch((e) => console.warn('Sync resgate fallback:', e));
     }
   }
 
@@ -2115,7 +2279,7 @@
     `;
   }
 
-  function createNewProfile(event) {
+  async function createNewProfile(event) {
     event.preventDefault();
     if (!validateFieldLive('name', 'np-name', true)) {
       const el = document.getElementById('np-name');
@@ -2132,8 +2296,26 @@
         ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
         : name.substring(0, 2).toUpperCase();
     const shortName = parts[0];
-    const id = 'prof-' + Date.now();
+    let id = 'prof-' + Date.now();
     const todayStr = new Date().toLocaleDateString('pt-BR');
+
+    // Integração Passo 2: Criar perfil familiar no Supabase (/api/perfis)
+    if (authToken) {
+      try {
+        const resProf = await apiCall('/perfis', 'POST', {
+          nome: name,
+          papel: role,
+          telefone: '(16) 99123-4567',
+          avatarBg: '#DCFCE7',
+          avatarCor: '#15803D'
+        });
+        if (resProf && resProf.sucesso && resProf.perfil?.id) {
+          id = resProf.perfil.id;
+        }
+      } catch (e) {
+        console.warn('Criar perfil api fallback:', e);
+      }
+    }
 
     const newProf = {
       id,
@@ -2245,7 +2427,7 @@
       authMode = mode;
       renderApp(true);
     },
-    handleLogin(event) {
+    async handleLogin(event) {
       event.preventDefault();
       const emailOk = validateFieldLive('email', 'login-email', true);
       const passOk = validateFieldLive('password', 'login-pass', true);
@@ -2257,9 +2439,52 @@
       }
 
       const emailVal = normalizeEmail(document.getElementById('login-email').value);
+      const passVal = document.getElementById('login-pass').value;
       state.accountEmail = emailVal;
 
-      // Se esse e-mail ainda não possuir nenhum perfil cadastrado, cria um perfil titular limpo exclusivo para ele
+      const btnSubmit = event.target.querySelector('button[type="submit"]');
+      const origText = btnSubmit ? btnSubmit.innerHTML : '';
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = 'Entrando...';
+      }
+
+      // Integração Passo 1: Autenticação via /api/autenticacao
+      try {
+        const apiPass = (emailVal === 'teste@email.com' && (passVal === 'teste' || passVal === 'teste123')) ? 'teste123' : passVal;
+        const authRes = await apiCall('/autenticacao', 'POST', {
+          acao: 'login',
+          email: emailVal,
+          senha: apiPass
+        });
+
+        if (authRes && authRes.sucesso && authRes.sessao?.access_token) {
+          setAuthToken(authRes.sessao.access_token);
+
+          // Integração Passo 2: Sincronização dos Perfis da Família
+          if (Array.isArray(authRes.perfis) && authRes.perfis.length > 0) {
+            authRes.perfis.forEach((dbP) => {
+              const existingIdx = state.profiles.findIndex((p) => p.id === dbP.id || (p.name === dbP.nome && normalizeEmail(p.email) === emailVal));
+              const mapped = mapDbProfileToClient(dbP, existingIdx >= 0 ? state.profiles[existingIdx] : {});
+              if (existingIdx >= 0) {
+                state.profiles[existingIdx] = mapped;
+              } else {
+                state.profiles.push(mapped);
+              }
+            });
+            state.activeProfileId = authRes.perfis[0].id;
+          }
+        }
+      } catch (err) {
+        console.warn('Login offline / local fallback:', err);
+      } finally {
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.innerHTML = origText;
+        }
+      }
+
+      // Fallback local se não retornou perfis do banco
       const existingForEmail = getAccountProfiles();
       if (existingForEmail.length === 0) {
         const prefix = emailVal.split('@')[0] || 'Cliente';
@@ -2294,7 +2519,7 @@
           ]
         });
         state.activeProfileId = newId;
-      } else {
+      } else if (!state.activeProfileId || !existingForEmail.some(p => p.id === state.activeProfileId)) {
         state.activeProfileId = existingForEmail[0].id;
       }
 
@@ -2303,7 +2528,7 @@
       saveState();
       renderApp(true);
     },
-    handleRegister(event) {
+    async handleRegister(event) {
       event.preventDefault();
       const nameOk = validateFieldLive('name', 'reg-name', true);
       const emailOk = validateFieldLive('email', 'reg-email', true);
@@ -2318,18 +2543,49 @@
 
       const name = document.getElementById('reg-name').value.trim();
       const email = normalizeEmail(document.getElementById('reg-email').value);
+      const pass = document.getElementById('reg-pass').value;
       state.accountEmail = email;
+
+      const btnSubmit = event.target.querySelector('button[type="submit"]');
+      const origText = btnSubmit ? btnSubmit.innerHTML : '';
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = 'Criando conta...';
+      }
+
+      let createdProfile = null;
+      // Integração Passo 1: Cadastro via /api/autenticacao
+      try {
+        const regRes = await apiCall('/autenticacao', 'POST', {
+          acao: 'cadastrar',
+          email,
+          senha: pass,
+          nome: name
+        });
+        if (regRes && regRes.sucesso && regRes.sessao?.access_token) {
+          setAuthToken(regRes.sessao.access_token);
+          if (regRes.perfil) {
+            createdProfile = mapDbProfileToClient(regRes.perfil);
+          }
+        }
+      } catch (err) {
+        console.warn('Registro offline / local fallback:', err);
+      } finally {
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.innerHTML = origText;
+        }
+      }
 
       const parts = name.split(' ').filter(Boolean);
       const initials =
         parts.length > 1
           ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
           : name.substring(0, 2).toUpperCase();
-      const newId = 'user-' + Date.now();
+      const newId = createdProfile ? createdProfile.id : ('user-' + Date.now());
       const todayStr = new Date().toLocaleDateString('pt-BR');
 
-      // Remove apenas se já existir perfil homônimo no mesmo e-mail recém-criado; mantém isolamento por e-mail
-      state.profiles.push({
+      const profileToSave = createdProfile || {
         id: newId,
         name,
         shortName: parts[0],
@@ -2355,8 +2611,9 @@
             date: todayStr
           }
         ]
-      });
+      };
 
+      state.profiles.push(profileToSave);
       state.activeProfileId = newId;
       state.isAuthenticated = true;
       state.profileSelected = true;
@@ -2370,9 +2627,12 @@
       currentTab = 'inicio';
       saveState();
       renderApp(true);
+      // Sincroniza dados atualizados do banco em segundo plano
+      syncProfileDataFromApi(profileId);
     },
     logout() {
       closeModal();
+      setAuthToken(null);
       state.isAuthenticated = false;
       state.profileSelected = false;
       saveState();
