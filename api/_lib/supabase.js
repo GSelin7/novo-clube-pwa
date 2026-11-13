@@ -73,10 +73,11 @@ export function handleError(res, error, defaultMessage = 'Erro interno do servid
   if (!isSupabaseConfigured) {
     return res.status(503).json({
       success: false,
+      erro: 'Variáveis de ambiente do Supabase (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY) ainda não configuradas na Vercel.',
       error: 'Variáveis de ambiente do Supabase (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY) ainda não configuradas na Vercel.'
     });
   }
   const status = error.status || 500;
   const message = error.message || defaultMessage;
-  res.status(status).json({ success: false, error: message });
+  res.status(status).json({ success: false, erro: message, error: message });
 }

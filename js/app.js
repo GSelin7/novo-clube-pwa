@@ -25,15 +25,82 @@
         headers,
         body: body ? JSON.stringify(body) : undefined
       });
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const errJson = await res.json().catch(() => ({}));
-        throw new Error(errJson.erro || errJson.error || `HTTP ${res.status}`);
+        const errMsg = data.erro || data.error || `Erro HTTP ${res.status}`;
+        const err = new Error(errMsg);
+        err.status = res.status;
+        err.data = data;
+        throw err;
       }
-      return await res.json();
+      return data;
     } catch (err) {
       console.warn(`[NovoClube API] ${method} ${endpoint}:`, err.message);
+      if (err.status) {
+        throw err;
+      }
       return null;
     }
+  }
+
+  function showAuthLoading(title = 'Acessando o Novo Clube...', desc = 'Carregando perfis da família...') {
+    let overlay = document.getElementById('auth-loading-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'auth-loading-overlay';
+      overlay.className = 'auth-loading-overlay';
+      overlay.innerHTML = `
+        <div class="auth-loading-card">
+          <div class="auth-loading-mascot-wrap">
+            <div class="auth-loading-spinner-ring"></div>
+            <img src="assets/images/astros/astro-servicos.png?v=17" alt="Astro Serviços" class="auth-loading-mascot" />
+          </div>
+          <h3 id="auth-loading-title" class="auth-loading-title">${title}</h3>
+          <p id="auth-loading-desc" class="auth-loading-desc">${desc}</p>
+          <div class="auth-loading-bar-track">
+            <div class="auth-loading-bar-fill"></div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+    } else {
+      const t = document.getElementById('auth-loading-title');
+      const d = document.getElementById('auth-loading-desc');
+      if (t) t.textContent = title;
+      if (d) d.textContent = desc;
+      overlay.classList.remove('is-hidden');
+    }
+  }
+
+  function hideAuthLoading() {
+    const overlay = document.getElementById('auth-loading-overlay');
+    if (overlay) {
+      overlay.classList.add('is-hidden');
+      setTimeout(() => {
+        if (overlay && overlay.parentNode) {
+          overlay.parentNode.removeChild(overlay);
+        }
+      }, 280);
+    }
+  }
+
+  function showAuthAlert(message, type = 'error') {
+    const container = document.getElementById('auth-alert-container');
+    if (!container) return;
+    const icon = type === 'error' ? '⚠️' : 'ℹ️';
+    container.innerHTML = `
+      <div class="auth-alert is-${type}">
+        <span class="auth-alert-icon">${icon}</span>
+        <div class="auth-alert-content">
+          <span>${message}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function clearAuthAlert() {
+    const container = document.getElementById('auth-alert-container');
+    if (container) container.innerHTML = '';
   }
 
   function mapDbProfileToClient(dbProf, existing = {}) {
@@ -489,6 +556,7 @@
               <button type="button" class="auth-tab ${isLogin ? 'active' : ''}" onclick="window.NovoClube.setAuthMode('login')">Entrar na Conta</button>
               <button type="button" class="auth-tab ${!isLogin ? 'active' : ''}" onclick="window.NovoClube.setAuthMode('register')">Criar Conta Grátis</button>
             </div>
+            <div id="auth-alert-container"></div>
 
             ${
               isLogin
@@ -2425,10 +2493,12 @@
     },
     setAuthMode(mode) {
       authMode = mode;
+      clearAuthAlert();
       renderApp(true);
     },
     async handleLogin(event) {
       event.preventDefault();
+      clearAuthAlert();
       const emailOk = validateFieldLive('email', 'login-email', true);
       const passOk = validateFieldLive('password', 'login-pass', true);
       if (!emailOk || !passOk) {
@@ -2440,7 +2510,6 @@
 
       const emailVal = normalizeEmail(document.getElementById('login-email').value);
       const passVal = document.getElementById('login-pass').value;
-      state.accountEmail = emailVal;
 
       const btnSubmit = event.target.querySelector('button[type="submit"]');
       const origText = btnSubmit ? btnSubmit.innerHTML : '';
@@ -2448,6 +2517,9 @@
         btnSubmit.disabled = true;
         btnSubmit.innerHTML = 'Entrando...';
       }
+
+      showAuthLoading('Acessando o Novo Clube...', 'Conectando à sua conta e carregando perfis da família...');
+      const startTime = Date.now();
 
       // Integração Passo 1: Autenticação via /api/autenticacao
       try {
@@ -2460,6 +2532,7 @@
 
         if (authRes && authRes.sucesso && authRes.sessao?.access_token) {
           setAuthToken(authRes.sessao.access_token);
+          state.accountEmail = emailVal;
 
           // Integração Passo 2: Sincronização dos Perfis da Família
           if (Array.isArray(authRes.perfis) && authRes.perfis.length > 0) {
@@ -2474,17 +2547,57 @@
             });
             state.activeProfileId = authRes.perfis[0].id;
           }
+        } else {
+          throw new Error(authRes?.erro || 'Credenciais inválidas.');
         }
       } catch (err) {
+        const elapsed = Date.now() - startTime;
+        if (elapsed < 400) {
+          await new Promise(r => setTimeout(r, 400 - elapsed));
+        }
+
+        // Se o servidor retornou erro HTTP (ex: 401 Credenciais inválidas)
+        if (err.status) {
+          hideAuthLoading();
+          if (btnSubmit) {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = origText;
+          }
+          const msg = err.status === 401 ? 'E-mail ou senha incorretos. Verifique seus dados e tente novamente.' : (err.message || 'Falha no login.');
+          setFieldValidationState('login-pass', false, msg);
+          const passEl = document.getElementById('login-pass');
+          if (passEl) passEl.focus();
+          showAuthAlert(msg, 'error');
+          return;
+        }
+
+        // Caso estritamente offline (sem resposta de rede)
         console.warn('Login offline / local fallback:', err);
-      } finally {
-        if (btnSubmit) {
-          btnSubmit.disabled = false;
-          btnSubmit.innerHTML = origText;
+        const existingForEmail = getAccountProfiles();
+        if (existingForEmail.length === 0 && emailVal !== 'teste@email.com') {
+          hideAuthLoading();
+          if (btnSubmit) {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = origText;
+          }
+          const offlineMsg = 'Sem conexão com a internet. Não foi possível autenticar esta conta pela primeira vez.';
+          setFieldValidationState('login-email', false, offlineMsg);
+          showAuthAlert(offlineMsg, 'warning');
+          return;
         }
       }
 
-      // Fallback local se não retornou perfis do banco
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 600) {
+        await new Promise(r => setTimeout(r, 600 - elapsed));
+      }
+      hideAuthLoading();
+      if (btnSubmit) {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = origText;
+      }
+
+      state.accountEmail = emailVal;
       const existingForEmail = getAccountProfiles();
       if (existingForEmail.length === 0) {
         const prefix = emailVal.split('@')[0] || 'Cliente';
@@ -2530,6 +2643,7 @@
     },
     async handleRegister(event) {
       event.preventDefault();
+      clearAuthAlert();
       const nameOk = validateFieldLive('name', 'reg-name', true);
       const emailOk = validateFieldLive('email', 'reg-email', true);
       const passOk = validateFieldLive('password', 'reg-pass', true);
@@ -2544,7 +2658,16 @@
       const name = document.getElementById('reg-name').value.trim();
       const email = normalizeEmail(document.getElementById('reg-email').value);
       const pass = document.getElementById('reg-pass').value;
-      state.accountEmail = email;
+
+      // 1. Checagem prévia no cache local de perfis para impedir cadastro com mesmo e-mail
+      const existingAccount = state.profiles.find(p => normalizeEmail(p.email) === email);
+      if (existingAccount) {
+        setFieldValidationState('reg-email', false, 'Este e-mail já está cadastrado no Novo Clube. Faça login para continuar.');
+        const emailEl = document.getElementById('reg-email');
+        if (emailEl) emailEl.focus();
+        showAuthAlert('Este e-mail já está cadastrado no Novo Clube. Por favor, acesse a aba "Entrar na Conta" para fazer login.', 'warning');
+        return;
+      }
 
       const btnSubmit = event.target.querySelector('button[type="submit"]');
       const origText = btnSubmit ? btnSubmit.innerHTML : '';
@@ -2552,6 +2675,9 @@
         btnSubmit.disabled = true;
         btnSubmit.innerHTML = 'Criando conta...';
       }
+
+      showAuthLoading('Criando sua conta familiar...', 'Desbloqueando seu 1º Astro e preparando seus benefícios...');
+      const startTime = Date.now();
 
       let createdProfile = null;
       // Integração Passo 1: Cadastro via /api/autenticacao
@@ -2567,16 +2693,39 @@
           if (regRes.perfil) {
             createdProfile = mapDbProfileToClient(regRes.perfil);
           }
+        } else {
+          throw new Error(regRes?.erro || 'Não foi possível concluir o cadastro.');
         }
       } catch (err) {
-        console.warn('Registro offline / local fallback:', err);
-      } finally {
+        const elapsed = Date.now() - startTime;
+        if (elapsed < 400) {
+          await new Promise(r => setTimeout(r, 400 - elapsed));
+        }
+        hideAuthLoading();
         if (btnSubmit) {
           btnSubmit.disabled = false;
           btnSubmit.innerHTML = origText;
         }
+
+        const msg = err.message || 'Falha ao realizar cadastro. Tente novamente.';
+        setFieldValidationState('reg-email', false, msg);
+        const emailEl = document.getElementById('reg-email');
+        if (emailEl) emailEl.focus();
+        showAuthAlert(msg, 'error');
+        return; // BLOQUEIO TOTAL: Não cria perfil e não avança com e-mail duplicado ou erro!
       }
 
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 600) {
+        await new Promise(r => setTimeout(r, 600 - elapsed));
+      }
+      hideAuthLoading();
+      if (btnSubmit) {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = origText;
+      }
+
+      state.accountEmail = email;
       const parts = name.split(' ').filter(Boolean);
       const initials =
         parts.length > 1

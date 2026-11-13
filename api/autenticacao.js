@@ -21,24 +21,57 @@ export default async function handler(req, res) {
     }
 
     const { email, senha, password, nome, name } = req.body || {};
+    const emailLimpo = (email || '').trim().toLowerCase();
     const senhaFinal = senha || password;
     const nomeFinal = (nome || name || '').trim();
 
     // 2. CADASTRO DE NOVA CONTA FAMILIAR
     if (acaoNormalizada === 'cadastrar' || acaoNormalizada === 'register') {
-      if (!email || !senhaFinal || !nomeFinal) {
-        return sendJson(res, 400, { erro: 'Nome, e-mail e senha são obrigatórios' });
+      if (!emailLimpo || !senhaFinal || !nomeFinal) {
+        return sendJson(res, 400, { sucesso: false, erro: 'Nome, e-mail e senha são obrigatórios' });
       }
 
-      // Cria usuário no Supabase Auth
+      if (senhaFinal.length < 6) {
+        return sendJson(res, 400, { sucesso: false, erro: 'A senha deve conter no mínimo 6 caracteres.' });
+      }
+
+      // 2.1 Verifica previamente se já existe perfil com este e-mail no banco
+      const { data: perfilExistente } = await supabaseAdmin
+        .from('perfis')
+        .select('id, email')
+        .ilike('email', emailLimpo)
+        .limit(1)
+        .maybeSingle();
+
+      if (perfilExistente) {
+        return sendJson(res, 409, {
+          sucesso: false,
+          erro: 'Este e-mail já está cadastrado no Novo Clube. Por favor, acesse a aba "Entrar na Conta" para fazer login.'
+        });
+      }
+
+      // 2.2 Cria usuário no Supabase Auth
       const { data: authData, error: authErr } = await supabaseAdmin.auth.admin.createUser({
-        email,
+        email: emailLimpo,
         password: senhaFinal,
         email_confirm: true,
         user_metadata: { nome_completo: nomeFinal }
       });
 
       if (authErr) {
+        const msg = (authErr.message || '').toLowerCase();
+        if (msg.includes('already') || msg.includes('registered') || authErr.status === 422) {
+          return sendJson(res, 409, {
+            sucesso: false,
+            erro: 'Este e-mail já está cadastrado no Novo Clube. Por favor, acesse a aba "Entrar na Conta" para fazer login.'
+          });
+        }
+        if (msg.includes('at least 6 characters') || msg.includes('password')) {
+          return sendJson(res, 400, {
+            sucesso: false,
+            erro: 'A senha deve conter no mínimo 6 caracteres.'
+          });
+        }
         return handleError(res, authErr, 'Falha ao registrar usuário');
       }
 
@@ -55,7 +88,7 @@ export default async function handler(req, res) {
           nome_curto: nomeCurto,
           iniciais: iniciais,
           papel: 'Titular • Família',
-          email: email,
+          email: emailLimpo,
           avatar_bg: '#B8D4F2',
           avatar_cor: '#1E40AF',
           pontos_colecao: 0,
@@ -80,7 +113,7 @@ export default async function handler(req, res) {
 
       // Retorna a sessão para login imediato
       const { data: sessaoData } = await supabasePublic.auth.signInWithPassword({
-        email,
+        email: emailLimpo,
         password: senhaFinal
       });
 
@@ -94,17 +127,20 @@ export default async function handler(req, res) {
 
     // 3. LOGIN NA CONTA
     if (acaoNormalizada === 'login' || acaoNormalizada === 'entrar') {
-      if (!email || !senhaFinal) {
-        return sendJson(res, 400, { erro: 'E-mail e senha são obrigatórios' });
+      if (!emailLimpo || !senhaFinal) {
+        return sendJson(res, 400, { sucesso: false, erro: 'E-mail e senha são obrigatórios' });
       }
 
       const { data, error } = await supabasePublic.auth.signInWithPassword({
-        email,
+        email: emailLimpo,
         password: senhaFinal
       });
 
       if (error) {
-        return sendJson(res, 401, { sucesso: false, erro: 'Credenciais inválidas: ' + error.message });
+        return sendJson(res, 401, {
+          sucesso: false,
+          erro: 'E-mail ou senha incorretos. Verifique suas credenciais.'
+        });
       }
 
       // Busca os perfis familiares vinculados à conta
